@@ -1,0 +1,226 @@
+{
+  "observed_on": "2026-11-13",
+  "method": "Selective primary-source abstracts/official docs/vendor announcements and pinned repository metadata/README/license reads; no runtime or benchmarks",
+  "sources": [
+    {
+      "id": "H01",
+      "type": "parent_code",
+      "title": "agente: contratos inspeccionados por SHA",
+      "url": "https://github.com/uniscrolliabrain-cloud/agente/tree/54b8d5407a8576459448c4d059a877297d18ca7a",
+      "observed_on": "2026-11-13",
+      "scope": "Mapa heredado de31archivos más6nuevas lecturas selectivas. Main cotejado13noviembre; no auditoría exhaustiva, tests o cambios.",
+      "access_status": "OBSERVED_CODE",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "P01",
+      "type": "paper",
+      "title": "Graphic-Design-Bench",
+      "url": "https://arxiv.org/abs/2604.04192",
+      "observed_on": "2026-11-13",
+      "scope": "Abstract/versiones disponibles consultados, no reproducción; inferencia de diseño: Medir layout, tipografía, texto, vector y semántica por separado; una imagen atractiva no acredita archivo estructurado válido.",
+      "access_status": "SELECTIVE_READ",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "P02",
+      "type": "paper",
+      "title": "Designer-RSI",
+      "url": "https://arxiv.org/abs/2609.22086",
+      "observed_on": "2026-11-13",
+      "scope": "Abstract/versiones disponibles consultados, no reproducción; inferencia de diseño: Memoria procedimental con gate de replay inspira propuestas de SOP; no aprender automáticamente de tráfico privado de clientes.",
+      "access_status": "SELECTIVE_READ",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "P03",
+      "type": "paper",
+      "title": "GraphicBench",
+      "url": "https://arxiv.org/abs/2504.11571",
+      "observed_on": "2026-11-13",
+      "scope": "Abstract/versiones disponibles consultados, no reproducción; inferencia de diseño: Planificación y ejecución creativa tienen errores distintos; probar dependencias globales y artefactos finales, no solo el plan.",
+      "access_status": "SELECTIVE_READ",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "V01",
+      "type": "vendor_primary",
+      "title": "Figma design agent",
+      "url": "https://www.figma.com/blog/the-figma-agent-is-here/",
+      "observed_on": "2026-11-13",
+      "scope": "Estudiar edición/constraints y revisión colaborativa; no presumir que API REST permite cualquier edición. Fuente comercial/regulatoria selectiva, no prueba de producto; no heredar certificaciones/precios.",
+      "access_status": "DOCUMENTED_NOT_TESTED",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "V02",
+      "type": "vendor_primary",
+      "title": "Canva",
+      "url": "https://www.canva.com/newsroom/news/",
+      "observed_on": "2026-11-13",
+      "scope": "Patrón de plantillas y consistencia; términos/planes/rights se revisan por función. Fuente comercial/regulatoria selectiva, no prueba de producto; no heredar certificaciones/precios.",
+      "access_status": "DOCUMENTED_NOT_TESTED",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "V03",
+      "type": "vendor_primary",
+      "title": "Adobe AEM Assets",
+      "url": "https://business.adobe.com/products/experience-manager/assets.html",
+      "observed_on": "2026-11-13",
+      "scope": "Patrón DAM y gobernanza de activos; no heredar licencias o certificaciones de su página. Fuente comercial/regulatoria selectiva, no prueba de producto; no heredar certificaciones/precios.",
+      "access_status": "DOCUMENTED_NOT_TESTED",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "S01",
+      "type": "security_or_law_primary",
+      "title": "Supabase JWT",
+      "url": "https://supabase.com/docs/guides/auth/jwts",
+      "observed_on": "2026-11-13",
+      "scope": "Verificación/claims/JWKS; sin tokens de usuarios reales.",
+      "access_status": "DOCUMENTED_NOT_TESTED",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "S02",
+      "type": "security_or_law_primary",
+      "title": "Supabase RLS",
+      "url": "https://supabase.com/docs/guides/database/postgres/row-level-security",
+      "observed_on": "2026-11-13",
+      "scope": "Scope de SQL y user_metadata editable; sin DB configurada.",
+      "access_status": "DOCUMENTED_NOT_TESTED",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "N01",
+      "type": "security_or_law_primary",
+      "title": "Anam overview",
+      "url": "https://anam.ai/docs/introduction/overview",
+      "observed_on": "2026-11-13",
+      "scope": "Presencia para agente existente y pipeline; sin sesión/plan/API test.",
+      "access_status": "DOCUMENTED_NOT_TESTED",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "L01",
+      "type": "security_or_law_primary",
+      "title": "RGPD",
+      "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj",
+      "observed_on": "2026-11-13",
+      "scope": "Consulta selectiva, no dictamen universal.",
+      "access_status": "DOCUMENTED_NOT_TESTED",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "L02",
+      "type": "security_or_law_primary",
+      "title": "AI Act",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
+      "observed_on": "2026-11-13",
+      "scope": "Uso/rol/fechas/clasificación a revalidar para implementación.",
+      "access_status": "DOCUMENTED_NOT_TESTED",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "L03",
+      "type": "security_or_law_primary",
+      "title": "LSSI",
+      "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2002-13758",
+      "observed_on": "2026-11-13",
+      "scope": "Comunicaciones/propósito y oposición según caso, revisión humana.",
+      "access_status": "DOCUMENTED_NOT_TESTED",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "D01",
+      "type": "domain_primary",
+      "title": "Propiedad intelectual",
+      "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1996-8930",
+      "observed_on": "2026-11-13",
+      "scope": "Derechos, licencias y usos necesitan análisis concreto; procedencia no equivale a autorización.",
+      "access_status": "SELECTIVE_READ",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "D02",
+      "type": "domain_primary",
+      "title": "Marcas",
+      "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2001-23093",
+      "observed_on": "2026-11-13",
+      "scope": "Búsqueda preliminar no prueba registrabilidad/disponibilidad ni sustituye evaluación jurídica.",
+      "access_status": "SELECTIVE_READ",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "R01",
+      "type": "repository",
+      "title": "penpot/penpot",
+      "url": "https://github.com/penpot/penpot/tree/d774e197d0435422bcfd3cac3064622ea79396d3",
+      "observed_on": "2026-11-13",
+      "scope": "Metadatos y README selectivos por SHA; ver repositories.json; rama por defecto no es release aprobada.",
+      "access_status": "OBSERVED_REPOSITORY",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "R02",
+      "type": "repository",
+      "title": "fabricjs/fabric.js",
+      "url": "https://github.com/fabricjs/fabric.js/tree/ab604137e04dd7d3d566462a6b27f5863e37c60b",
+      "observed_on": "2026-11-13",
+      "scope": "Metadatos y README selectivos por SHA; ver repositories.json; rama por defecto no es release aprobada.",
+      "access_status": "OBSERVED_REPOSITORY",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "R03",
+      "type": "repository",
+      "title": "SVG-Edit/svgedit",
+      "url": "https://github.com/SVG-Edit/svgedit/tree/c44f061d2f9a626d2771cc931298af5a45522d87",
+      "observed_on": "2026-11-13",
+      "scope": "Metadatos y README selectivos por SHA; ver repositories.json; rama por defecto no es release aprobada.",
+      "access_status": "OBSERVED_REPOSITORY",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "R04",
+      "type": "repository",
+      "title": "style-dictionary/style-dictionary",
+      "url": "https://github.com/style-dictionary/style-dictionary/tree/795233d9bee6a7b5787d685d75d626df3399d24d",
+      "observed_on": "2026-11-13",
+      "scope": "Metadatos y README selectivos por SHA; ver repositories.json; rama por defecto no es release aprobada.",
+      "access_status": "OBSERVED_REPOSITORY",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    },
+    {
+      "id": "R05",
+      "type": "repository",
+      "title": "google/fonts",
+      "url": "https://github.com/google/fonts/tree/3e5667764ccfea32ce0c3d58a3a4756de890adc1",
+      "observed_on": "2026-11-13",
+      "scope": "Metadatos y README selectivos por SHA; ver repositories.json; rama por defecto no es release aprobada.",
+      "access_status": "OBSERVED_REPOSITORY",
+      "runtime_verified": false,
+      "benchmark_reproduced": false
+    }
+  ]
+}

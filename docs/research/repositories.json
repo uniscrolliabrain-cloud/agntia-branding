@@ -1,0 +1,62 @@
+{
+  "observed_on": "2026-11-13",
+  "reference_is_production_pin": false,
+  "repositories": [
+    {
+      "repository": "penpot/penpot",
+      "reference_sha": "d774e197d0435422bcfd3cac3064622ea79396d3",
+      "branch": "develop",
+      "metadata_license": "MPL-2.0",
+      "read_path": "README.md",
+      "read_blob_sha": "ffd702aa315a90be43c7d6846b0702148f94d551",
+      "scope": "Metadata and first90–100 README lines; not code audit/install/runtime verification",
+      "license_review": null,
+      "runtime_verified": false
+    },
+    {
+      "repository": "fabricjs/fabric.js",
+      "reference_sha": "ab604137e04dd7d3d566462a6b27f5863e37c60b",
+      "branch": "master",
+      "metadata_license": "MIT",
+      "read_path": "README.md",
+      "read_blob_sha": "e100151f6b724702984994d1796551bc901e3d7b",
+      "scope": "Metadata and first90–100 README lines; not code audit/install/runtime verification",
+      "license_review": null,
+      "runtime_verified": false
+    },
+    {
+      "repository": "SVG-Edit/svgedit",
+      "reference_sha": "c44f061d2f9a626d2771cc931298af5a45522d87",
+      "branch": "master",
+      "metadata_license": "MIT",
+      "read_path": "README.md",
+      "read_blob_sha": "6e3dc14738249d79819df23732e341ee80a496f7",
+      "scope": "Metadata and first90–100 README lines; not code audit/install/runtime verification",
+      "license_review": null,
+      "runtime_verified": false
+    },
+    {
+      "repository": "style-dictionary/style-dictionary",
+      "reference_sha": "795233d9bee6a7b5787d685d75d626df3399d24d",
+      "branch": "main",
+      "metadata_license": "Apache-2.0",
+      "read_path": "README.md",
+      "read_blob_sha": "baf705a9a8e4384db469ef19afba8cb21309f22f",
+      "scope": "Metadata and first90–100 README lines; not code audit/install/runtime verification",
+      "license_review": null,
+      "runtime_verified": false
+    },
+    {
+      "repository": "google/fonts",
+      "reference_sha": "3e5667764ccfea32ce0c3d58a3a4756de890adc1",
+      "branch": "main",
+      "metadata_license": "UNKNOWN",
+      "read_path": "README.md",
+      "read_blob_sha": "3b81447d6213af82f5dd0844f6094384fb6ba3a9",
+      "scope": "Metadata and first90–100 README lines; not code audit/install/runtime verification",
+      "license_review": null,
+      "runtime_verified": false
+    }
+  ],
+  "license_notes": "Penpot MPL-2.0 y Fabric/SVG-Edit MIT son candidatos según metadatos; revisar dependencias. Style Dictionary Apache-2.0 no certifica licencia de cada token/asset. Google Fonts requiere leer la licencia de cada familia, embedding/subsetting y condiciones de redistribución; no todo contenido del repo recibe una licencia única."
+}
