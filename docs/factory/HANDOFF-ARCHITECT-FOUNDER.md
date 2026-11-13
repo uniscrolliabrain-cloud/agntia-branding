@@ -1,0 +1,3 @@
+# Handoff marco — Arquitecto + Founder
+
+**Arquitecto (ChatGPT):** prepara y mantiene léxico, mapa de autoridad, contratos propuestos, fronteras Branding/Diseño/Marketing/Redes/Vídeo, trazabilidad ADTC y coherencia de las 42 campañas; cuando el founder aporte el meta-audit de Astra, reconciliar ideas sin exigir evidencia de código inexistente. **Founder:** define prioridades, acepta/rechaza cambios de arquitectura, autoriza granularización, merges, accesos externos y despliegues. Sin decisión explícita no alterar padre/main ni servicios externos. Guardar futuro meta-audit en `docs/audits/` cuando sea recibido, sin crear informes ficticios.
