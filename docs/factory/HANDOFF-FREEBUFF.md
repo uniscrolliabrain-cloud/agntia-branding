@@ -1,0 +1,3 @@
+# Handoff marco — Freebuff / implementación futura
+
+**No iniciar código todavía.** El repositorio está en PREP y espera meta-auditoría conceptual y reconciliación. Antes de una campaña, leer `docs/factory/`, `docs/prep/`, `docs/campaigns/campaign.json`, el documento original y el scaffold correspondiente, N−1/N/N+1, y SHA vigente del padre. Cuando el founder autorice campaña granular: branch única, patchsets por fichero, contratos y tests, tenant/ACL, ADTC, outbox, idempotencia, evidencia, rollback. No tocar padre ni repos hermanos; no publicar/registrar marcas/desplegar. No simular que un scaffold es una orden ejecutable.
