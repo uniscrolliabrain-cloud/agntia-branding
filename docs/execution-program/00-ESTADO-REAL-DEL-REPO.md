@@ -1,0 +1,3 @@
+# Baseline — Agntia Branding
+
+Inspección GitHub de main 2026-11-14: 76 entradas, todas documentales, investigación, contratos, manifest y runbooks; no app, SDK, proveedores ni tests de producto. README indica DOCUMENTATION_ONLY, 42 campañas NOT_STARTED, 0 pruebas ejecutadas. Referencia padre histórica `54b8d5407a8576459448c4d059a877297d18ca7a` — no asumir HEAD actual. Freebuff debe registrar `git rev-parse HEAD`, `git status --porcelain`, `git ls-files`, verificar licencias Penpot/Fabric/Style Dictionary y fuentes, y resolver drift. Todas las rutas de código son propuestas, no archivos ya existentes.
