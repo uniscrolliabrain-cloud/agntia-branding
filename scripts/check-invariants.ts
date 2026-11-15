@@ -119,8 +119,20 @@ async function main(): Promise<void> {
   await check("secretos: sin valores con pinta de credencial en el código", async () => {
     const files = execFileSync("git", ["ls-files", "src", "scripts"], { encoding: "utf8" })
       .split("\n")
-      .filter((f) => f.trim() !== "");
-    const suspicious = /(?:sk_live_|sk_test_|service_role|eyJhbGciOi|-----BEGIN (?:RSA )?PRIVATE KEY-----)/;
+      .filter((f) => f.trim() !== "")
+      // The scanner contains the patterns it searches for, so it must not
+      // scan itself; otherwise the check fails on its own source once tracked.
+      .filter((f) => f !== "scripts/check-invariants.ts");
+    // Match credential SHAPES, not the words in prose or in a denylist. A comment
+    // saying "service_role is not a guarantee" is not a leaked key.
+    const suspicious = new RegExp(
+      [
+        "(?:sk_live_|sk_test_)[A-Za-z0-9]{16,}",
+        "eyJhbGciOi[A-Za-z0-9_-]{10,}\\.",
+        "-----BEGIN (?:RSA )?PRIVATE KEY-----",
+        "service_role\\s*[:=]\\s*[\"'][^\"']{20,}[\"']",
+      ].join("|"),
+    );
     const offenders: string[] = [];
     for (const file of files) {
       const content = await readFile(file, "utf8");
