@@ -2,11 +2,31 @@
 
 Branding, diseño y sistemas de marca: diseño de empresa SaaS especialista con middleware hacia AgntiaPro/`agente`. Entrega documental de la familia Agntia · 2026-11-13.
 
-**DOCUMENTATION_ONLY. No hay aplicación, SDK, proveedores conectados o tests de producto ejecutados. Las 42 campañas están NOT_STARTED; sus pruebas están NOT_EXECUTED.** Aspiración de calidad inspirada en referentes mundiales; no afirmación de paridad, certificación o cumplimiento universal.
+**IMPLEMENTACIÓN EN CURSO (2026-11-15), NO producto terminado.** Existe un monorepo TypeScript (contratos Zod, dominio determinista, identidad JWT, persistencia, adaptadores, API Hono, SDK) con **107 tests en verde** y typecheck limpio. Siguen sin verificar: Supabase real, Postgres/RLS en instancia, Penpot, Anam, editor vectorial y portal (UI). Las 42 campañas siguen abiertas como gates de producto: cobertura local en [docs/execution-evidence/FINAL-FREEBUFF-REPORT.md](docs/execution-evidence/FINAL-FREEBUFF-REPORT.md). Aspiración de calidad inspirada en referentes mundiales; no afirmación de paridad, certificación o cumplimiento universal.
 
 Entregar identidad y materiales de marca editables, coherentes, accesibles y trazables con revisión humana y derechos de uso demostrables.
 
 Se presta servicio a empresas del padre y a clientes externos mediante portal propio. Agentes canónicos en `/agente`, twins vinculados aquí; todos los modos con JWT Supabase, membresía/ACL verificados y aislamiento de datos/jobs/archivos/búsqueda/Realtime/exportaciones. Se permite duplicación de funciones con repos hermanos; un AuthorityMap por encargo fija responsables para evitar doble efecto. **No se modifica agente.**
+
+## Código (estado real)
+
+```bash
+npm ci          # instala desde package-lock.json
+npm run typecheck
+npm test        # 107 tests
+```
+
+| Paquete | Contenido |
+|---|---|
+| `packages/contracts` | Envelope, DTOs estrictos, dinero decimal, hashing canónico, errores normalizados |
+| `packages/domain` | AuthorityMap, FSM, aprobaciones, brief→brandbook, derechos/fuentes, documento vectorial, tokens, QA, preflight, entrega, coste, privacidad, aceptación |
+| `packages/identity` | Verificación JWT Supabase (JWKS fijo), membership/ACL, TwinBinding y mandato |
+| `packages/persistence` | Stores tenant-scoped con CAS, audit append-only, outbox/inbox, idempotencia + migración SQL con RLS |
+| `packages/adapters` | Discovery de capacidades, URLs firmadas, puertos Penpot/Anam (sin endpoints inventados) |
+| `apps/api` | API Hono con PEP, envelope, idempotencia y errores 4xx/5xx normalizados |
+| `packages/sdk` | Cliente servidor tipado con allowlist de rutas |
+
+No hay UI, ni proveedores conectados, ni base de datos provisionada. `not_configured` y `NOT_VERIFIED` se muestran como tales; ningún mock se presenta como integración real.
 
 ## Leer en orden
 

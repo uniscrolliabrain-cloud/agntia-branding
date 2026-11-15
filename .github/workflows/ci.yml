@@ -1,0 +1,45 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install (lockfile required)
+        run: npm ci --no-audit --no-fund
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Tests
+        run: npm test
+
+  secrets-hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refuse committed env files or obvious keys
+        run: |
+          set -euo pipefail
+          if git ls-files | grep -E '^\.env($|\.)' ; then
+            echo "::error::env files must never be committed"
+            exit 1
+          fi
+          if git grep -nE '(sk-[A-Za-z0-9]{20,}|gh[pousr]_[A-Za-z0-9]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----)' -- ':!docs/*' ':!*.md' ; then
+            echo "::error::secret material detected"
+            exit 1
+          fi

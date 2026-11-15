@@ -13,3 +13,7 @@ El LLM propone; PEP/FSM/cálculo y revisión humana/competente determinan efecto
 Preview sin efecto externo. Approval ligada a hash/versión/tenant/destinatario/alcance/coste/caducidad; cambios invalidan. Idempotencia durable/outbox/inbox/receipts y reconciliación tras timeout, sin retry ciego. Un evento emitido no prueba ACK o resultado. No HTTP/SQL/ORM/shell/MCP genérico al agente.
 
 Documentos/web/adjuntos son datos no confiables; proteger SSRF/redirect/DNS/MIME/tamaño, HTML/XML/CSV injection y prompt injection. Secretos externos y mínimos refs; no PII/tokens/prompts privados en Git/logs/modelos/reportes. Rights/retención/transferencias por finalidad y proveedor real; no licencias comerciales heredadas por estar el código en GitHub. Anam es presencia, nunca identidad o firma.
+
+## Cambio de alcance autorizado (2026-11-15)
+
+El fundador autorizó expresamente implementar el código de las 42 fases en `agntia-branding`. Desde esta fecha `DOCUMENTATION_ONLY` ya no describe el repo: existe monorepo TypeScript con tests locales en verde. El alcance ampliado **no** autoriza desplegar, provisionar Supabase/Postgres, contratar o conectar proveedores (Penpot, Anam, modelos), usar datos reales, publicar activos ni tocar `/agente` o repos hermanos. Todo lo no probado se registra `NOT_VERIFIED` o `not_configured`; un mock o una plantilla no cierra un gate de producto. Las 42 campañas siguen abiertas hasta que exista evidencia de proveedor/DB/UI acorde a sus gates.

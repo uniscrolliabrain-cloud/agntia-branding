@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@agntia/contracts": ["packages/contracts/src/index.ts"],
+      "@agntia/domain": ["packages/domain/src/index.ts"],
+      "@agntia/identity": ["packages/identity/src/index.ts"],
+      "@agntia/adapters": ["packages/adapters/src/index.ts"],
+      "@agntia/persistence": ["packages/persistence/src/index.ts"],
+      "@agntia/sdk": ["packages/sdk/src/index.ts"]
+    }
+  },
+  "include": [
+    "packages/*/src/**/*.ts",
+    "apps/*/src/**/*.ts",
+    "tests/**/*.ts",
+    "vitest.config.ts"
+  ]
+}
