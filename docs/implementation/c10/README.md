@@ -1,6 +1,6 @@
 # BRD-C10 · Investigación de marca — evidencia de implementación
 
-Estado: **PARTIAL**. Generado 2026-11-15T15:04:26.989Z sobre `1c78cf14e95c5d69d598a9089ca51472190e81ae`.
+Estado: **PARTIAL**. Generado 2026-11-15T15:07:38.312Z sobre `6870a10a5f163fa3a07685f6facdcd6a9e8e7c61`.
 
 Fetch con allowlist de host, https, sin credenciales en URL, límite de tamaño y tipo de contenido.
 
