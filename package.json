@@ -1,0 +1,24 @@
+{
+  "name": "agntia-branding",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Branding, diseño y sistemas de marca — especialista AgntiaPro con twin delegado",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --test test/",
+    "check": "npm run typecheck && npm run test",
+    "migrate": "node src/db/migrate.ts",
+    "seed": "node src/db/seed.ts"
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}

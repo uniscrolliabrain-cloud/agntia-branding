@@ -1,0 +1,846 @@
+{
+  "schema_version": 1,
+  "repository": "uniscrolliabrain-cloud/agntia-branding",
+  "generated_at": "2026-11-15T15:04:26.989Z",
+  "base_sha": "1c78cf14e95c5d69d598a9089ca51472190e81ae",
+  "program": {
+    "campaigns": 42,
+    "tasks": 294,
+    "gates": 84
+  },
+  "status_counts": {
+    "IMPLEMENTED_LOCAL": 28,
+    "PARTIAL": 12,
+    "BLOCKED_PROVIDER": 1,
+    "NOT_IMPLEMENTED": 1
+  },
+  "gates": {
+    "pass": 74,
+    "not_verified": 10
+  },
+  "verification": {
+    "typecheck": "pass",
+    "tests": {
+      "total": 88,
+      "pass": 88,
+      "fail": 0
+    },
+    "invariants": {
+      "total": 7,
+      "pass": 7
+    },
+    "database_applied": false,
+    "providers_configured": false,
+    "deployed": false
+  },
+  "campaigns": [
+    {
+      "id": "BRD-C01",
+      "sequence": 1,
+      "title": "Baseline, fuentes y alcance",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "scripts/check-invariants.ts"
+      ],
+      "tests": [
+        "programa: 42 campañas, 294 tareas, 84 gates"
+      ],
+      "gates": {
+        "BRD-C01-G01": "PASS",
+        "BRD-C01-G02": "PASS"
+      },
+      "gap": "El SHA del padre no se ha revalidado contra su HEAD actual.",
+      "evidence": "docs/implementation/c01/README.md"
+    },
+    {
+      "id": "BRD-C02",
+      "sequence": 2,
+      "title": "Autoridad por dominio y contrato SaaS",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/policy/pep.ts",
+        "src/contracts/capabilities.ts",
+        "src/db/schema.sql"
+      ],
+      "tests": [
+        "PEP rechaza capacidades desconocidas",
+        "PEP deniega recurso fuera del scope del colaborador"
+      ],
+      "gates": {
+        "BRD-C02-G01": "PASS",
+        "BRD-C02-G02": "PASS"
+      },
+      "gap": "AuthorityMap no se ha ejercitado contra un encargo real entre dos repos.",
+      "evidence": "docs/implementation/c02/README.md"
+    },
+    {
+      "id": "BRD-C03",
+      "sequence": 3,
+      "title": "Supabase JWT y principal",
+      "status": "PARTIAL",
+      "files": [
+        "src/auth/jwt.ts",
+        "src/auth/service.ts",
+        "src/auth/principal.ts"
+      ],
+      "tests": [
+        "firma inválida se rechaza",
+        "JWT válido sin membresía provisionada no autoriza",
+        "token de otro tenant no reutiliza la membresía propia"
+      ],
+      "gates": {
+        "BRD-C03-G01": "PASS",
+        "BRD-C03-G02": "PASS"
+      },
+      "gap": "JWKS no se ha probado contra un proyecto Supabase real (no hay credenciales).",
+      "evidence": "docs/implementation/c03/README.md"
+    },
+    {
+      "id": "BRD-C04",
+      "sequence": 4,
+      "title": "Twins y nomenclatura canónica",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/policy/mandate.ts",
+        "src/auth/principal.ts"
+      ],
+      "tests": [
+        "mandato caducado bloquea efectos nuevos",
+        "mandato no se autoamplía",
+        "mandato no cubre capacidades fuera de su lista"
+      ],
+      "gates": {
+        "BRD-C04-G01": "PASS",
+        "BRD-C04-G02": "PASS"
+      },
+      "gap": "La resolución del runtimeId canónico desde el padre no está verificada.",
+      "evidence": "docs/implementation/c04/README.md"
+    },
+    {
+      "id": "BRD-C05",
+      "sequence": 5,
+      "title": "DTOs, esquemas y errores",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/contracts/errors.ts",
+        "src/contracts/envelope.ts",
+        "src/contracts/evidence.ts"
+      ],
+      "tests": [
+        "un cuerpo que intenta fijar el tenant se rechaza",
+        "el cliente no puede inyectar identidad en el cuerpo"
+      ],
+      "gates": {
+        "BRD-C05-G01": "PASS",
+        "BRD-C05-G02": "PASS"
+      },
+      "gap": "No se ha generado un JSON Schema publicable para terceros.",
+      "evidence": "docs/implementation/c05/README.md"
+    },
+    {
+      "id": "BRD-C06",
+      "sequence": 6,
+      "title": "Persistencia, RLS y migraciones",
+      "status": "PARTIAL",
+      "files": [
+        "src/db/schema.sql",
+        "src/db/migrate.ts",
+        "src/db/seed.ts",
+        "src/db/seed.sql"
+      ],
+      "tests": [
+        "schema: toda tabla habilita row level security",
+        "schema: FORCE row level security (el propietario tampoco evade)",
+        "schema: roles sin privilegios BYPASSRLS concedidos"
+      ],
+      "gates": {
+        "BRD-C06-G01": "PASS",
+        "BRD-C06-G02": "NOT_VERIFIED"
+      },
+      "gap": "El esquema no se ha aplicado a una base real; las políticas no se han probado con dos sesiones.",
+      "evidence": "docs/implementation/c06/README.md"
+    },
+    {
+      "id": "BRD-C07",
+      "sequence": 7,
+      "title": "Mandatos, finalidad y aprobaciones",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/policy/approval.ts",
+        "src/policy/pep.ts"
+      ],
+      "tests": [
+        "cambiar el contenido invalida la aprobación",
+        "el proponente no puede aprobar su propio efecto",
+        "PEP exige aprobación para exportar tokens"
+      ],
+      "gates": {
+        "BRD-C07-G01": "PASS",
+        "BRD-C07-G02": "PASS"
+      },
+      "gap": "No hay flujo de UI para emitir la aprobación.",
+      "evidence": "docs/implementation/c07/README.md"
+    },
+    {
+      "id": "BRD-C08",
+      "sequence": 8,
+      "title": "Secretos, discovery y aislamiento remoto",
+      "status": "PARTIAL",
+      "files": [
+        "src/adapters/index.ts",
+        "FreeBuff/DOPPLER-READY.md"
+      ],
+      "tests": [
+        "SSRF: host fuera de la allowlist se rechaza antes de la red",
+        "un informe de capacidad no verificado impide invocar operaciones"
+      ],
+      "gates": {
+        "BRD-C08-G01": "PASS",
+        "BRD-C08-G02": "PASS"
+      },
+      "gap": "Ningún proveedor está configurado; no hay discovery real.",
+      "evidence": "docs/implementation/c08/README.md"
+    },
+    {
+      "id": "BRD-C09",
+      "sequence": 9,
+      "title": "Brief y estrategia",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/brand.ts"
+      ],
+      "tests": [
+        "vertical completo: brief → identidad → tokens → diseño → QA → export → entrega"
+      ],
+      "gates": {
+        "BRD-C09-G01": "PASS",
+        "BRD-C09-G02": "PASS"
+      },
+      "gap": "No hay editor de brief en UI.",
+      "evidence": "docs/implementation/c09/README.md"
+    },
+    {
+      "id": "BRD-C10",
+      "sequence": 10,
+      "title": "Investigación de marca",
+      "status": "PARTIAL",
+      "files": [
+        "src/adapters/index.ts"
+      ],
+      "tests": [
+        "SSRF: redirección a otro host se valida de nuevo y se corta",
+        "SSRF: contenido binario se rechaza"
+      ],
+      "gates": {
+        "BRD-C10-G01": "NOT_VERIFIED",
+        "BRD-C10-G02": "PASS"
+      },
+      "gap": "No se ha consultado ninguna fuente real; no hay corpus de investigación.",
+      "evidence": "docs/implementation/c10/README.md"
+    },
+    {
+      "id": "BRD-C11",
+      "sequence": 11,
+      "title": "Naming y opciones",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/brand.ts"
+      ],
+      "tests": [
+        "vertical completo: brief → identidad → tokens → diseño → QA → export → entrega"
+      ],
+      "gates": {
+        "BRD-C11-G01": "PASS",
+        "BRD-C11-G02": "PASS"
+      },
+      "gap": "No hay generación de nombres por modelo (correcto: es propuesta, no hecho).",
+      "evidence": "docs/implementation/c11/README.md"
+    },
+    {
+      "id": "BRD-C12",
+      "sequence": 12,
+      "title": "Clearance preliminar",
+      "status": "PARTIAL",
+      "files": [
+        "src/domain/brand.ts"
+      ],
+      "tests": [
+        "vertical completo: brief → identidad → tokens → diseño → QA → export → entrega"
+      ],
+      "gates": {
+        "BRD-C12-G01": "NOT_VERIFIED",
+        "BRD-C12-G02": "NOT_VERIFIED"
+      },
+      "gap": "No hay registro de marcas conectado ni clases realmente consultadas.",
+      "evidence": "docs/implementation/c12/README.md"
+    },
+    {
+      "id": "BRD-C13",
+      "sequence": 13,
+      "title": "Identidad verbal",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/brand.ts"
+      ],
+      "tests": [
+        "vertical completo: brief → identidad → tokens → diseño → QA → export → entrega"
+      ],
+      "gates": {
+        "BRD-C13-G01": "PASS",
+        "BRD-C13-G02": "PASS"
+      },
+      "gap": "Sin revisión editorial humana integrada.",
+      "evidence": "docs/implementation/c13/README.md"
+    },
+    {
+      "id": "BRD-C14",
+      "sequence": 14,
+      "title": "Direcciones visuales",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/brand.ts"
+      ],
+      "tests": [
+        "vertical completo: brief → identidad → tokens → diseño → QA → export → entrega"
+      ],
+      "gates": {
+        "BRD-C14-G01": "PASS",
+        "BRD-C14-G02": "PASS"
+      },
+      "gap": "Sin moodboards renderizados.",
+      "evidence": "docs/implementation/c14/README.md"
+    },
+    {
+      "id": "BRD-C15",
+      "sequence": 15,
+      "title": "Ledger de activos y derechos",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/rights.ts",
+        "src/db/schema.sql"
+      ],
+      "tests": [
+        "preflight bloquea derechos caducados o de otro propósito"
+      ],
+      "gates": {
+        "BRD-C15-G01": "PASS",
+        "BRD-C15-G02": "PASS"
+      },
+      "gap": "Sin integración con un registro de licencias externo.",
+      "evidence": "docs/implementation/c15/README.md"
+    },
+    {
+      "id": "BRD-C16",
+      "sequence": 16,
+      "title": "Tipografía y fuentes",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/rights.ts"
+      ],
+      "tests": [
+        "preflight bloquea una tipografía sin licencia verificada"
+      ],
+      "gates": {
+        "BRD-C16-G01": "PASS",
+        "BRD-C16-G02": "PASS"
+      },
+      "gap": "No hay lector de licencias por familia de Google Fonts.",
+      "evidence": "docs/implementation/c16/README.md"
+    },
+    {
+      "id": "BRD-C17",
+      "sequence": 17,
+      "title": "Documento vectorial",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/document.ts"
+      ],
+      "tests": [
+        "el render es determinista y cambia si cambia la fuente",
+        "CAS: editar con versión antigua produce conflicto"
+      ],
+      "gates": {
+        "BRD-C17-G01": "PASS",
+        "BRD-C17-G02": "PASS"
+      },
+      "gap": "Sin rasterizador: no se producen bytes de imagen.",
+      "evidence": "docs/implementation/c17/README.md"
+    },
+    {
+      "id": "BRD-C18",
+      "sequence": 18,
+      "title": "Adaptador Penpot",
+      "status": "BLOCKED_PROVIDER",
+      "files": [
+        "src/adapters/index.ts"
+      ],
+      "tests": [
+        "un informe de capacidad no verificado impide invocar operaciones"
+      ],
+      "gates": {
+        "BRD-C18-G01": "NOT_VERIFIED",
+        "BRD-C18-G02": "NOT_VERIFIED"
+      },
+      "gap": "Sin instancia Penpot, sin OAuth, sin verificación de ACL remota.",
+      "evidence": "docs/implementation/c18/README.md"
+    },
+    {
+      "id": "BRD-C19",
+      "sequence": 19,
+      "title": "Canvas Fabric/SVG",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/canvas.ts"
+      ],
+      "tests": [
+        "SVG: script se rechaza",
+        "SVG: referencia externa y data URI se rechazan",
+        "SVG válido se conserva y pierde atributos no permitidos"
+      ],
+      "gates": {
+        "BRD-C19-G01": "PASS",
+        "BRD-C19-G02": "PASS"
+      },
+      "gap": "Sin motor Fabric/SVG-Edit integrado (no instalado).",
+      "evidence": "docs/implementation/c19/README.md"
+    },
+    {
+      "id": "BRD-C20",
+      "sequence": 20,
+      "title": "Logotipo y variantes",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/brand.ts"
+      ],
+      "tests": [
+        "vertical completo: brief → identidad → tokens → diseño → QA → export → entrega"
+      ],
+      "gates": {
+        "BRD-C20-G01": "PASS",
+        "BRD-C20-G02": "PASS"
+      },
+      "gap": "Sin editor vectorial de logo.",
+      "evidence": "docs/implementation/c20/README.md"
+    },
+    {
+      "id": "BRD-C21",
+      "sequence": 21,
+      "title": "Paleta y accesibilidad",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/palette.ts"
+      ],
+      "tests": [
+        "contraste se calcula: negro sobre blanco es 21",
+        "un par con contraste insuficiente bloquea la paleta"
+      ],
+      "gates": {
+        "BRD-C21-G01": "PASS",
+        "BRD-C21-G02": "PASS"
+      },
+      "gap": "Sin auditoría automatizada de la UI final.",
+      "evidence": "docs/implementation/c21/README.md"
+    },
+    {
+      "id": "BRD-C22",
+      "sequence": 22,
+      "title": "Design tokens",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/tokens.ts"
+      ],
+      "tests": [
+        "tokens: un ciclo de alias es un error",
+        "tokens: alias que cambia de tipo se rechaza"
+      ],
+      "gates": {
+        "BRD-C22-G01": "PASS",
+        "BRD-C22-G02": "PASS"
+      },
+      "gap": "Sin editor visual de tokens.",
+      "evidence": "docs/implementation/c22/README.md"
+    },
+    {
+      "id": "BRD-C23",
+      "sequence": 23,
+      "title": "Style Dictionary",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/tokens.ts"
+      ],
+      "tests": [
+        "tokens: export reproducible y determinista"
+      ],
+      "gates": {
+        "BRD-C23-G01": "PASS",
+        "BRD-C23-G02": "PASS"
+      },
+      "gap": "No se instala Style Dictionary; el formato se emite sin su motor.",
+      "evidence": "docs/implementation/c23/README.md"
+    },
+    {
+      "id": "BRD-C24",
+      "sequence": 24,
+      "title": "Plantillas y componentes",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/brand.ts"
+      ],
+      "tests": [
+        "vertical completo: brief → identidad → tokens → diseño → QA → export → entrega"
+      ],
+      "gates": {
+        "BRD-C24-G01": "PASS",
+        "BRD-C24-G02": "PASS"
+      },
+      "gap": "Sin render de plantillas.",
+      "evidence": "docs/implementation/c24/README.md"
+    },
+    {
+      "id": "BRD-C25",
+      "sequence": 25,
+      "title": "Layouts responsive",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/brand.ts"
+      ],
+      "tests": [
+        "vertical completo: brief → identidad → tokens → diseño → QA → export → entrega"
+      ],
+      "gates": {
+        "BRD-C25-G01": "PASS",
+        "BRD-C25-G02": "PASS"
+      },
+      "gap": "La medición es estimada, no tipográfica real.",
+      "evidence": "docs/implementation/c25/README.md"
+    },
+    {
+      "id": "BRD-C26",
+      "sequence": 26,
+      "title": "Composición y edición",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/document.ts"
+      ],
+      "tests": [
+        "CAS: editar con la versión correcta incrementa versión",
+        "el diff identifica cambios reales por nodo"
+      ],
+      "gates": {
+        "BRD-C26-G01": "PASS",
+        "BRD-C26-G02": "PASS"
+      },
+      "gap": "Sin UI de canvas.",
+      "evidence": "docs/implementation/c26/README.md"
+    },
+    {
+      "id": "BRD-C27",
+      "sequence": 27,
+      "title": "QA de texto",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/qa.ts"
+      ],
+      "tests": [
+        "QA de texto detecta deriva numérica"
+      ],
+      "gates": {
+        "BRD-C27-G01": "PASS",
+        "BRD-C27-G02": "PASS"
+      },
+      "gap": "Sin OCR: se compara el texto renderizado que el motor reporta.",
+      "evidence": "docs/implementation/c27/README.md"
+    },
+    {
+      "id": "BRD-C28",
+      "sequence": 28,
+      "title": "QA visual y revisión",
+      "status": "PARTIAL",
+      "files": [
+        "src/domain/qa.ts"
+      ],
+      "tests": [
+        "QA: atractivo alto no compensa texto incorrecto"
+      ],
+      "gates": {
+        "BRD-C28-G01": "PASS",
+        "BRD-C28-G02": "PASS"
+      },
+      "gap": "No hay juez de visión ni diff de píxeles.",
+      "evidence": "docs/implementation/c28/README.md"
+    },
+    {
+      "id": "BRD-C29",
+      "sequence": 29,
+      "title": "Brandbook y reglas",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/brand.ts"
+      ],
+      "tests": [
+        "el brandbook solo admite activos aprobados"
+      ],
+      "gates": {
+        "BRD-C29-G01": "PASS",
+        "BRD-C29-G02": "PASS"
+      },
+      "gap": "Sin PDF de brandbook.",
+      "evidence": "docs/implementation/c29/README.md"
+    },
+    {
+      "id": "BRD-C30",
+      "sequence": 30,
+      "title": "Export y preflight",
+      "status": "PARTIAL",
+      "files": [
+        "src/domain/export.ts"
+      ],
+      "tests": [
+        "preflight produce manifiesto ligado a documento, fuente y derechos",
+        "preflight rechaza PDF por debajo de 300 dpi"
+      ],
+      "gates": {
+        "BRD-C30-G01": "PASS",
+        "BRD-C30-G02": "PASS"
+      },
+      "gap": "No se generan bytes PDF/PNG: no hay renderer.",
+      "evidence": "docs/implementation/c30/README.md"
+    },
+    {
+      "id": "BRD-C31",
+      "sequence": 31,
+      "title": "Entrega y publicación",
+      "status": "PARTIAL",
+      "files": [
+        "src/domain/export.ts"
+      ],
+      "tests": [
+        "la entrega al sandbox genera receipt sin publicar"
+      ],
+      "gates": {
+        "BRD-C31-G01": "PASS",
+        "BRD-C31-G02": "PASS"
+      },
+      "gap": "Sin canal real (email/portal) y sin publicación: prohibido sin autorización.",
+      "evidence": "docs/implementation/c31/README.md"
+    },
+    {
+      "id": "BRD-C32",
+      "sequence": 32,
+      "title": "Aprendizaje y librería",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/domain/learning.ts"
+      ],
+      "tests": [
+        "un procedimiento no se activa sin replay ni con autoaprobación",
+        "el aprendizaje no cruza tenants"
+      ],
+      "gates": {
+        "BRD-C32-G01": "PASS",
+        "BRD-C32-G02": "PASS"
+      },
+      "gap": "Sin replay contra casos grabados (no hay corpus).",
+      "evidence": "docs/implementation/c32/README.md"
+    },
+    {
+      "id": "BRD-C33",
+      "sequence": 33,
+      "title": "Reportes, dashboard e infografías",
+      "status": "PARTIAL",
+      "files": [
+        "src/domain/reports.ts"
+      ],
+      "tests": [
+        "un reporte no puede ocultar métricas sin dato"
+      ],
+      "gates": {
+        "BRD-C33-G01": "PASS",
+        "BRD-C33-G02": "PASS"
+      },
+      "gap": "Sin dashboard ni infografías renderizadas.",
+      "evidence": "docs/implementation/c33/README.md"
+    },
+    {
+      "id": "BRD-C34",
+      "sequence": 34,
+      "title": "Portal responsive, chat y Anam",
+      "status": "NOT_IMPLEMENTED",
+      "files": [
+        "src/adapters/index.ts"
+      ],
+      "tests": [],
+      "gates": {
+        "BRD-C34-G01": "NOT_VERIFIED",
+        "BRD-C34-G02": "NOT_VERIFIED"
+      },
+      "gap": "Sin portal, sin chat, sin UI responsive, sin sesión AV.",
+      "evidence": "docs/implementation/c34/README.md"
+    },
+    {
+      "id": "BRD-C35",
+      "sequence": 35,
+      "title": "SDK TypeScript, Hono y tools",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/sdk/client.ts",
+        "src/api/app.ts",
+        "src/contracts/capabilities.ts"
+      ],
+      "tests": [
+        "me devuelve principal y capacidades del rol",
+        "una ruta inexistente devuelve 404 normalizado",
+        "las capacidades de efecto con aprobación no son invocables por el modelo"
+      ],
+      "gates": {
+        "BRD-C35-G01": "PASS",
+        "BRD-C35-G02": "PASS"
+      },
+      "gap": "No se publica paquete npm; no hay proxy en producción.",
+      "evidence": "docs/implementation/c35/README.md"
+    },
+    {
+      "id": "BRD-C36",
+      "sequence": 36,
+      "title": "Bridge de agente y eventos",
+      "status": "PARTIAL",
+      "files": [
+        "src/obs/adtc.ts",
+        "src/obs/events.ts",
+        "src/runtime/outbox.ts"
+      ],
+      "tests": [
+        "no se proyecta un éxito al padre sin receipt",
+        "el outbox deduplica por domainEventId y solo confirma con ACK"
+      ],
+      "gates": {
+        "BRD-C36-G01": "PASS",
+        "BRD-C36-G02": "PASS"
+      },
+      "gap": "HOST_BRIDGE_NOT_VERIFIED: no hay endpoint del padre.",
+      "evidence": "docs/implementation/c36/README.md"
+    },
+    {
+      "id": "BRD-C37",
+      "sequence": 37,
+      "title": "Cooperación y handoff empresarial",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/runtime/handoff.ts",
+        "src/runtime/outbox.ts"
+      ],
+      "tests": [
+        "handoff: sin receipt del receptor no hay ACK ni finalización"
+      ],
+      "gates": {
+        "BRD-C37-G01": "PASS",
+        "BRD-C37-G02": "PASS"
+      },
+      "gap": "Sin repo hermano real con el que intercambiar.",
+      "evidence": "docs/implementation/c37/README.md"
+    },
+    {
+      "id": "BRD-C38",
+      "sequence": 38,
+      "title": "Modelos, coste y observabilidad",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "src/cost/budget.ts",
+        "src/obs/adtc.ts",
+        "src/obs/redaction.ts"
+      ],
+      "tests": [
+        "el presupuesto no permite sobregasto concurrente",
+        "la redacción elimina credenciales y contenido"
+      ],
+      "gates": {
+        "BRD-C38-G01": "PASS",
+        "BRD-C38-G02": "PASS"
+      },
+      "gap": "Sin gateway de modelos ni tarifas aprobadas.",
+      "evidence": "docs/implementation/c38/README.md"
+    },
+    {
+      "id": "BRD-C39",
+      "sequence": 39,
+      "title": "Privacidad y pruebas adversariales",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "test/adversarial.test.ts",
+        "scripts/check-invariants.ts"
+      ],
+      "tests": [
+        "SSRF: localhost y direcciones privadas se rechazan",
+        "schema: ninguna política sin predicado de tenant",
+        "la redacción elimina credenciales y contenido"
+      ],
+      "gates": {
+        "BRD-C39-G01": "PASS",
+        "BRD-C39-G02": "PASS"
+      },
+      "gap": "Sin pentest externo ni datos de clientes reales (correcto).",
+      "evidence": "docs/implementation/c39/README.md"
+    },
+    {
+      "id": "BRD-C40",
+      "sequence": 40,
+      "title": "Vertical E2E y fallos distribuidos",
+      "status": "IMPLEMENTED_LOCAL",
+      "files": [
+        "test/e2e.test.ts",
+        "test/fixtures.ts"
+      ],
+      "tests": [
+        "vertical completo: brief → identidad → tokens → diseño → QA → export → entrega",
+        "un activo de otro tenant no puede sostener un export del tenant A"
+      ],
+      "gates": {
+        "BRD-C40-G01": "PASS",
+        "BRD-C40-G02": "PASS"
+      },
+      "gap": "Sin proveedor real: el fallo distribuido se prueba con dobles.",
+      "evidence": "docs/implementation/c40/README.md"
+    },
+    {
+      "id": "BRD-C41",
+      "sequence": 41,
+      "title": "Operaciones, CI, backup y release",
+      "status": "PARTIAL",
+      "files": [
+        ".github/workflows/ci.yml",
+        "src/db/migrate.ts",
+        "src/db/seed.ts",
+        "LICENSE",
+        ".gitignore"
+      ],
+      "tests": [
+        "schema: toda tabla habilita row level security"
+      ],
+      "gates": {
+        "BRD-C41-G01": "PASS",
+        "BRD-C41-G02": "NOT_VERIFIED"
+      },
+      "gap": "Sin despliegue, sin backup/restore drill y sin release firmada.",
+      "evidence": "docs/implementation/c41/README.md"
+    },
+    {
+      "id": "BRD-C42",
+      "sequence": 42,
+      "title": "Aceptación, evidencia y handoff final",
+      "status": "PARTIAL",
+      "files": [
+        "FreeBuff/FOUNDER-FINAL-REPORT.md",
+        "docs/implementation/STATUS.md"
+      ],
+      "tests": [
+        "programa: 42 campañas, 294 tareas, 84 gates"
+      ],
+      "gates": {
+        "BRD-C42-G01": "PASS",
+        "BRD-C42-G02": "NOT_VERIFIED"
+      },
+      "gap": "Aceptación del owner y auditoría independiente pendientes.",
+      "evidence": "docs/implementation/c42/README.md"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+Copyright (c) 2026 uniscrolliabrain-cloud. All rights reserved.
+
+PROPRIETARY AND CONFIDENTIAL — NOT OPEN SOURCE.
+
+This repository and its contents are the confidential and proprietary property of
+uniscrolliabrain-cloud. No license, express or implied, is granted to copy,
+modify, distribute, sublicense, publish, or create derivative works of this
+software or its documentation, in whole or in part, without prior written
+authorization from the copyright holder.
+
+Access to this repository does not grant any right to use it for a commercial
+service, to redistribute it, or to incorporate it into another product.
+
+THIRD-PARTY COMPONENTS
+
+This project may depend on third-party open-source software. Those components
+remain under their own licenses, which are NOT superseded by this notice:
+
+- Penpot — MPL-2.0 (candidate adapter; not vendored)
+- Fabric.js — MIT (candidate adapter; not vendored)
+- SVG-Edit — MIT (candidate adapter; not vendored)
+- Style Dictionary — Apache-2.0 (candidate export engine; not vendored)
+- Google Fonts families — per-family licenses, UNKNOWN until each is read
+
+No code, font, asset, model weight, or template is relicensed by this file.
+A permissive license on a dependency does not grant rights over its outputs,
+brand assets, typefaces, or any client material processed by this service.
+
+TRADEMARKS
+
+No trademark registration, clearance opinion, or legal availability is claimed
+or implied by anything in this repository.

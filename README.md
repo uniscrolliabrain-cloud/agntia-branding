@@ -2,11 +2,21 @@
 
 Branding, diseño y sistemas de marca: diseño de empresa SaaS especialista con middleware hacia AgntiaPro/`agente`. Entrega documental de la familia Agntia · 2026-11-13.
 
-**DOCUMENTATION_ONLY. No hay aplicación, SDK, proveedores conectados o tests de producto ejecutados. Las 42 campañas están NOT_STARTED; sus pruebas están NOT_EXECUTED.** Aspiración de calidad inspirada en referentes mundiales; no afirmación de paridad, certificación o cumplimiento universal.
+**IMPLEMENTACIÓN PARCIAL Y LOCAL. Hay código TypeScript ejecutable, typecheck limpio y 88 tests reales en verde; no hay proveedores conectados, ni base de datos aplicada, ni despliegue.** Las 42 campañas originales siguen intactas en el manifest; su estado de implementación real vive en [la matriz de estado](docs/implementation/STATUS.md) (28 implementadas en local, 12 parciales, 1 bloqueada por proveedor, 1 sin implementar; 74/84 gates PASS sobre reglas locales). Aspiración de calidad inspirada en referentes mundiales; no afirmación de paridad, certificación o cumplimiento universal.
 
 Entregar identidad y materiales de marca editables, coherentes, accesibles y trazables con revisión humana y derechos de uso demostrables.
 
 Se presta servicio a empresas del padre y a clientes externos mediante portal propio. Agentes canónicos en `/agente`, twins vinculados aquí; todos los modos con JWT Supabase, membresía/ACL verificados y aislamiento de datos/jobs/archivos/búsqueda/Realtime/exportaciones. Se permite duplicación de funciones con repos hermanos; un AuthorityMap por encargo fija responsables para evitar doble efecto. **No se modifica agente.**
+
+## Implementación
+
+`src/` con contratos Zod, autenticación JWT, PEP, aprobaciones, idempotencia, outbox, dominio de marca (brief, naming, derechos, tipografía, documento vectorial, tokens, QA, preflight, handoff) y API `/v1/branding`. `src/db/schema.sql` define 18 tablas con RLS y FK compuestas por tenant. `test/` contiene la suite (88 casos).
+
+```bash
+npm ci && npm run typecheck && npm test && node scripts/check-invariants.ts
+```
+
+Ningún adaptador externo (Penpot, Anam, gateway de modelos, Supabase) está configurado: se declaran `not_configured` y no se simulan. Sin `DATABASE_URL`, `migrate`/`seed` salen con `NOT_CONFIGURED`.
 
 ## Leer en orden
 

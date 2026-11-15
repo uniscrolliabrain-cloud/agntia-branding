@@ -2,6 +2,8 @@
 
 **2026-11-15 · AUDITORÍA, NO IMPLEMENTACIÓN.** Este documento sustituye cualquier suposición sobre el estado del repositorio por mediciones reproducibles. No se ha escrito código de aplicación, no se han ejecutado tests de producto y no se ha contactado ningún proveedor.
 
+> **Actualización posterior.** Describe el SHA `7734d6d`, antes de la autorización de implementación. Tras esa autorización existe código, tests y evidencia por campaña: ver [`FOUNDER-FINAL-REPORT.md`](FOUNDER-FINAL-REPORT.md) y [`docs/implementation/STATUS.md`](../docs/implementation/STATUS.md). Las discrepancias D1–D3 y D5 de §4 se atendieron en la rama de ejecución; D4 se resolvió por decisión del fundador a favor del programa de ejecución; D6 y D8 siguen abiertas.
+
 ## Veredicto
 
 | Pregunta | Respuesta medida |
