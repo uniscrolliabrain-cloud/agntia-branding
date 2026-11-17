@@ -67,3 +67,14 @@ Leer primero `docs/prep/` si existe, `docs/factory/` íntegro, `docs/architectur
 ## Entregables de integración posteriores
 
 `FreeBuff/DOPPLER-READY.md`: nombres de variables, entorno, owners, scopes, rotación, fail-closed, sin secretos ni instalación. `FreeBuff/INTEGRATION-AGENTE-PROPOSAL.md`: esquema de JWT/membresía, twins, AuthorityMap, SDK/bridge, idempotencia, ADTC/eventos, approvals, tests y rollback, **sin editar el padre**. `FreeBuff/FOUNDER-FINAL-REPORT.md`: evidencias y estado honesto. Este handoff no ejecuta tests ni concede autorización de producción.
+
+## Entregables emitidos (2026-11-15, base `7734d6d`)
+
+Los tres documentos anteriores existen ya, más la auditoría que los precede. Estado del programa sin cambios: 42 campañas `NOT_STARTED`, 294 tareas `NOT_STARTED`, 84 gates `NOT_EXECUTED`, 0 código, 0 tests de producto.
+
+1. [`AUDITORIA-BASELINE-20261115.md`](AUDITORIA-BASELINE-20261115.md) — SHA congelado, matriz 42 campañas, 8 discrepancias (evidencia `cNN` ausente, rutas genéricas, validación obsoleta, conflicto PREP/ejecución, sin LICENSE/CI, SHA padre no revalidado, sin catálogo de secretos, licencia tipográfica `UNKNOWN`), condiciones de parada y comandos de reproducción.
+2. [`DOPPLER-READY.md`](DOPPLER-READY.md) — catálogo de variables con ámbito/lector/rotación, entornos `dev`/`stg`/`prd`, matriz fail-closed. Sin valores ni instalación.
+3. [`INTEGRATION-AGENTE-PROPOSAL.md`](INTEGRATION-AGENTE-PROPOSAL.md) — contratos heredados, TwinBinding, AuthorityMap, API/tools, eventos, idempotencia, approvals, pruebas y 6 propuestas al padre **no ejecutadas**.
+4. [`FOUNDER-FINAL-REPORT.md`](FOUNDER-FINAL-REPORT.md) — informe honesto, matriz 42×7, riesgos y la decisión pendiente del fundador.
+
+La implementación de las 42 campañas **no** se ha iniciado: el alcance autorizado de este encargo es documental y el conflicto de autoridad PREP vs programa de ejecución requiere decisión del fundador (§9 de la auditoría).
