@@ -1,6 +1,6 @@
 # Alcance autorizado y reglas
 
-El encargo actual es solo investigación, informes, contratos, planning y campañas, no código de aplicación, tests ejecutables, SDK, contenedores o despliegues. Publicar la entrega documental en main de agntia-branding está autorizado. **No modificar agente ni repos hermanos.** No activar proveedores, enviar mensajes, gastar, usar datos reales o presentar/firmar/pagar/contratar/acreditar para pasar un gate.
+El encargo original era solo investigación, informes, contratos, planning y campañas. **Ese alcance fue ampliado por el fundador: ver «Cambio de alcance autorizado» y «Autorización de publicación» al final de este archivo.** Sigue prohibido desplegar, provisionar, conectar proveedores o usar datos reales. Publicar en main de agntia-branding está autorizado. **No modificar agente ni repos hermanos.** No activar proveedores, enviar mensajes, gastar, usar datos reales o presentar/firmar/pagar/contratar/acreditar para pasar un gate.
 
 Una implementación futura requiere autorización propia. Leer README/handoff/fuentes/licencias/contratos, congelar SHAs y baseline real, ejecutar fases secuencialmente con gates y reportar cada cinco y las dos finales. Documentado no equivale a instalado; mock no prueba proveedor; test planeado no cuenta como ejecutado. Unknown/unsupported/forbidden quedan deshabilitados, no fallback admin/owner/default.
 
@@ -17,3 +17,7 @@ Documentos/web/adjuntos son datos no confiables; proteger SSRF/redirect/DNS/MIME
 ## Cambio de alcance autorizado (2026-11-15)
 
 El fundador autorizó expresamente implementar el código de las 42 fases en `agntia-branding`. Desde esta fecha `DOCUMENTATION_ONLY` ya no describe el repo: existe monorepo TypeScript con tests locales en verde. El alcance ampliado **no** autoriza desplegar, provisionar Supabase/Postgres, contratar o conectar proveedores (Penpot, Anam, modelos), usar datos reales, publicar activos ni tocar `/agente` o repos hermanos. Todo lo no probado se registra `NOT_VERIFIED` o `not_configured`; un mock o una plantilla no cierra un gate de producto. Las 42 campañas siguen abiertas hasta que exista evidencia de proveedor/DB/UI acorde a sus gates.
+
+## Autorización de publicación en main (2026-11-17)
+
+El fundador ordenó expresamente «deja todo pusheado en main». Por tanto el código implementado, sus tests y los informes de evidencia se publican en `main` de `uniscrolliabrain-cloud/agntia-branding`. Esto autoriza el push, **no** un despliegue: no hay runtime, Supabase, Postgres, Penpot ni Anam provisionados, y la matriz de campañas sigue declarando `PASS_LOCAL`/`PARTIAL_LOCAL` con `NOT_VERIFIED` explícito. El informe honesto vive en `docs/execution-evidence/FINAL-FREEBUFF-REPORT.md`.
