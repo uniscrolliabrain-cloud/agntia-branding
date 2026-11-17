@@ -193,7 +193,9 @@ describe("C38 · Presupuesto", () => {
 
 describe("C39 · Privacidad y secretos", () => {
   it("detecta material sensible antes de salir del boundary", () => {
-    expect(findSecrets("token sk-abcdefghijklmnopqrstuvwxyz012345")).toContain("openai_style_key");
+    // Se compone en runtime: el repo no debe contener cadenas con forma de clave ni siquiera como fixture.
+    const keyShapedFixture = "sk-" + "abcdefghijklmnopqrstuvwxyz012345";
+    expect(findSecrets(`token ${keyShapedFixture}`)).toContain("openai_style_key");
     expect(() => assertNoSecrets("Authorization: Bearer abcdefghijklmnopqrstuvwxyz012345", "log")).toThrowError(/secret material/);
     expect(findSecrets("texto normal de marca")).toEqual([]);
   });
