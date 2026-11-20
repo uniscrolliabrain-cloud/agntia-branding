@@ -58,7 +58,7 @@ scripts/         check-invariants.ts, generate-evidence.ts
 ```bash
 npm ci
 npm run typecheck                                   # tsc --noEmit → 0 errores
-npm test                                            # node --test test/ → 102/102
+npm test                                            # node --test test/ → 108/108
 npm run test:db                                     # RLS real: levanta PostgreSQL efímero, 7/7
 node scripts/check-invariants.ts                    # 7/7 (RLS, secretos, programa 42/294/84)
 node scripts/generate-evidence.ts                   # regenera cNN/* y STATUS.md
@@ -99,6 +99,16 @@ Lo que el modelo no puede dibujar con verdad (`path`, `image`, `group`) falla co
 
 `node scripts/render-smoke.ts` deja tres archivos en `artifacts/render/` con su
 sha256 para inspección humana.
+
+## Pixel diff: fidelidad medida
+
+`src/domain/pixeldiff.ts` compara dos rasterizaciones con tolerancia declarada
+(por canal, nunca "parecido") y devuelve píxeles distintos, ratio y caja del
+cambio. Además cruza el diff de documento con el de píxeles: un nodo que cambió
+y no aparece en la imagen se reporta como `invisible_change` y
+`assertRenderChangeVisible` lo convierte en error, porque un cambio aprobado que
+nadie ve es un defecto, no una advertencia. Comparar resoluciones distintas se
+rechaza en lugar de promediarse.
 
 ## Qué no se ha hecho aquí
 

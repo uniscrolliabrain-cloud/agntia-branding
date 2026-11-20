@@ -1,6 +1,6 @@
 # BRD-C31 — evidencia
 
-SHA base: `d0be6c7a7c66ff8e6961474237a8197ab127c5d1` · generado 2026-11-20T14:55:10.407Z.
+SHA base: `deb6e59400fea8f07ece16613be90b2145ec00be` · generado 2026-11-20T14:56:38.332Z.
 
 ## Arquivos
 

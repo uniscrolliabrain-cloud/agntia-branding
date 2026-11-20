@@ -391,7 +391,7 @@ function encodePng(raster: Raster, dpi: number): Buffer {
   ]);
 }
 
-function renderPng(document: DesignDocument, dpi: number, findings: string[]): { bytes: Buffer; scale: number } {
+function buildRaster(document: DesignDocument, dpi: number, findings: string[]): { raster: Raster; scale: number } {
   const scale = dpi / 96;
   const width = Math.round(PAGE_WIDTH * scale);
   const height = Math.round(PAGE_HEIGHT * scale);
@@ -411,7 +411,35 @@ function renderPng(document: DesignDocument, dpi: number, findings: string[]): {
     else if (node.kind === "ellipse") fillEllipse(raster, node, color, scale);
     else drawRasterText(raster, document, node, color, scale, findings);
   }
+  return { raster, scale };
+}
+
+function renderPng(document: DesignDocument, dpi: number, findings: string[]): { bytes: Buffer; scale: number } {
+  const { raster, scale } = buildRaster(document, dpi, findings);
   return { bytes: encodePng(raster, dpi), scale };
+}
+
+export interface RasterImage {
+  width: number;
+  height: number;
+  /** RGBA, row major, no padding. */
+  data: Uint8Array;
+  findings: string[];
+}
+
+/**
+ * The raster without the container. QA needs the pixels, not a PNG file, and a
+ * pixel diff should never have to decode its own output to compare it.
+ */
+export function rasterizeDocument(document: DesignDocument, dpi: number): RasterImage {
+  const findings: string[] = [];
+  const { raster } = buildRaster(document, dpi, findings);
+  return {
+    width: raster.width,
+    height: raster.height,
+    data: raster.data,
+    findings: [...new Set(findings)].sort(),
+  };
 }
 
 // ---------------------------------------------------------------------------

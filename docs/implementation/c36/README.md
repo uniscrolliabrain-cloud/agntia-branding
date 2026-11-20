@@ -1,6 +1,6 @@
 # BRD-C36 · Bridge de agente y eventos — evidencia de implementación
 
-Estado: **PARTIAL**. Generado 2026-11-20T14:55:10.407Z sobre `d0be6c7a7c66ff8e6961474237a8197ab127c5d1`.
+Estado: **PARTIAL**. Generado 2026-11-20T14:56:38.332Z sobre `deb6e59400fea8f07ece16613be90b2145ec00be`.
 
 Envelope ADTC, proyección a SystemEvent 1.0 y outbox con ACK posterior al commit.
 

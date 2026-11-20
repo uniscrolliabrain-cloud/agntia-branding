@@ -1,6 +1,6 @@
 # BRD-C16 · Tipografía y fuentes — evidencia de implementación
 
-Estado: **IMPLEMENTED_LOCAL**. Generado 2026-11-20T14:55:10.407Z sobre `d0be6c7a7c66ff8e6961474237a8197ab127c5d1`.
+Estado: **IMPLEMENTED_LOCAL**. Generado 2026-11-20T14:56:38.332Z sobre `deb6e59400fea8f07ece16613be90b2145ec00be`.
 
 Sin licencia verificada no hay embedding ni subsetting; no existe fallback silencioso.
 

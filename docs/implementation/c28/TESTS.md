@@ -1,11 +1,14 @@
 # BRD-C28 — tests
 
-Ejecutados realmente en este commit: `node --test test/` → **102/88 pass, 0 fail**.
+Ejecutados realmente en este commit: `node --test test/` → **108/88 pass, 0 fail**.
 Typecheck: `tsc --noEmit` → **0 errores**. Invariantes: `node scripts/check-invariants.ts` → **7/7 PASS**.
 
 ## Casos que cubren esta campaña
 
 - QA: atractivo alto no compensa texto incorrecto
+- un cambio de relleno aparece en los píxeles y dentro del nodo
+- un cambio fuera de la página se detecta como invisible
+- la tolerancia se declara y se respeta
 
 ## Lo que estos tests no prueban
 

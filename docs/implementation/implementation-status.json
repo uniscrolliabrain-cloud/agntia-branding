@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "repository": "uniscrolliabrain-cloud/agntia-branding",
-  "generated_at": "2026-11-20T14:55:10.407Z",
-  "base_sha": "d0be6c7a7c66ff8e6961474237a8197ab127c5d1",
+  "generated_at": "2026-11-20T14:56:38.332Z",
+  "base_sha": "deb6e59400fea8f07ece16613be90b2145ec00be",
   "program": {
     "campaigns": 42,
     "tasks": 294,
@@ -21,8 +21,8 @@
   "verification": {
     "typecheck": "pass",
     "tests": {
-      "total": 102,
-      "pass": 102,
+      "total": 108,
+      "pass": 108,
       "fail": 0
     },
     "invariants": {
@@ -564,16 +564,20 @@
       "title": "QA visual y revisión",
       "status": "PARTIAL",
       "files": [
-        "src/domain/qa.ts"
+        "src/domain/qa.ts",
+        "src/domain/pixeldiff.ts"
       ],
       "tests": [
-        "QA: atractivo alto no compensa texto incorrecto"
+        "QA: atractivo alto no compensa texto incorrecto",
+        "un cambio de relleno aparece en los píxeles y dentro del nodo",
+        "un cambio fuera de la página se detecta como invisible",
+        "la tolerancia se declara y se respeta"
       ],
       "gates": {
         "BRD-C28-G01": "PASS",
         "BRD-C28-G02": "PASS"
       },
-      "gap": "No hay juez de visión ni diff de píxeles.",
+      "gap": "No hay juez de visión ni revisión humana integrada: el diff mide diferencia, no calidad.",
       "evidence": "docs/implementation/c28/README.md"
     },
     {

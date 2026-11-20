@@ -1,6 +1,6 @@
 # Matriz de estado de implementación
 
-Generado 2026-11-20T14:55:10.407Z sobre `d0be6c7a7c66ff8e6961474237a8197ab127c5d1`. Fuente de verdad legible por máquina:
+Generado 2026-11-20T14:56:38.332Z sobre `deb6e59400fea8f07ece16613be90b2145ec00be`. Fuente de verdad legible por máquina:
 [`implementation-status.json`](implementation-status.json).
 
 **No sustituye al programa.** `docs/campaigns/campaign.json` sigue siendo el plan
@@ -18,7 +18,7 @@ dice qué parte de ese plan tiene código ejecutable hoy.
 
 Gates: **75/84 PASS**, **9/84 NOT_VERIFIED**.
 
-Verificado en este commit: `tsc --noEmit` 0 errores · `node --test test/` 102/102 ·
+Verificado en este commit: `tsc --noEmit` 0 errores · `node --test test/` 108/108 ·
 `node scripts/check-invariants.ts` 7/7 · `npm run test:db` 7/7 contra PostgreSQL real.
 
 ## Detalle
