@@ -44,7 +44,7 @@ const CAMPAIGNS: CampaignEvidence[] = [
   E({ seq: 3, id: "BRD-C03", title: "Supabase JWT y principal", status: "PARTIAL", files: ["src/auth/jwt.ts", "src/auth/service.ts", "src/auth/principal.ts"], tests: ["firma inválida se rechaza", "JWT válido sin membresía provisionada no autoriza", "token de otro tenant no reutiliza la membresía propia"], gate01: "PASS", gate02: "PASS", real: "Verificación asimétrica/simétrica, iss/aud/exp/nbf, JWKS con caché acotada y membresía obligatoria.", gap: "JWKS no se ha probado contra un proyecto Supabase real (no hay credenciales).", risks: ["Rotación de claves no ejercitada en runtime real"] }),
   E({ seq: 4, id: "BRD-C04", title: "Twins y nomenclatura canónica", status: "IMPLEMENTED_LOCAL", files: ["src/policy/mandate.ts", "src/auth/principal.ts"], tests: ["mandato caducado bloquea efectos nuevos", "mandato no se autoamplía", "mandato no cubre capacidades fuera de su lista"], gate01: "PASS", gate02: "PASS", real: "Mandato con capacidades, propósito, presupuesto, caducidad y versión de revocación; sin identidad canónica nueva.", gap: "La resolución del runtimeId canónico desde el padre no está verificada.", risks: ["Sin bind real al padre, el twin opera sólo con mandato local"] }),
   E({ seq: 5, id: "BRD-C05", title: "DTOs, esquemas y errores", status: "IMPLEMENTED_LOCAL", files: ["src/contracts/errors.ts", "src/contracts/envelope.ts", "src/contracts/evidence.ts"], tests: ["un cuerpo que intenta fijar el tenant se rechaza", "el cliente no puede inyectar identidad en el cuerpo"], gate01: "PASS", gate02: "PASS", real: "Sobres estrictos con rechazo de campos extra, envelope de error con correlación y EvidenceRef con hash canónico.", gap: "No se ha generado un JSON Schema publicable para terceros.", risks: ["Cambiar un campo material invalida contratos consumidos"] }),
-  E({ seq: 6, id: "BRD-C06", title: "Persistencia, RLS y migraciones", status: "PARTIAL", files: ["src/db/schema.sql", "src/db/migrate.ts", "src/db/seed.ts", "src/db/seed.sql"], tests: ["schema: toda tabla habilita row level security", "schema: FORCE row level security (el propietario tampoco evade)", "schema: roles sin privilegios BYPASSRLS concedidos"], gate01: "PASS", gate02: "NOT_VERIFIED", real: "18 tablas con RLS y FORCE, FK compuestas por tenant, roles app_api/app_worker y seed A/B/P determinista.", gap: "El esquema no se ha aplicado a una base real; las políticas no se han probado con dos sesiones.", risks: ["RLS no ejecutada es intención, no garantía"] }),
+  E({ seq: 6, id: "BRD-C06", title: "Persistencia, RLS y migraciones", status: "IMPLEMENTED_LOCAL", files: ["src/db/schema.sql", "src/db/migrate.ts", "src/db/seed.ts", "src/db/seed.sql", "test/db-rls.test.ts"], tests: ["cada tenant solo ve sus propios briefs con el rol de API", "escribir con el tenant de otro se rechaza por WITH CHECK", "sin tenant en sesión no se ve ninguna fila (fail-closed)", "el worker puede leer pero no borrar historia", "la FK compuesta impide enlazar un documento con datos de otro tenant"], gate01: "PASS", gate02: "PASS", real: "Esquema aplicado a un PostgreSQL 18 real: 18 tablas con RLS y FORCE, aislamiento A/B comprobado con app_api y app_worker, CHECK cruzado y FK compuesta rechazados.", gap: "No se ha aplicado a un entorno gestionado (Supabase) ni con credenciales reales; el superusuario evade RLS por diseño y por eso no es el rol de la aplicación.", risks: ["Un despliegue que conecte como superusuario o service_role anularía la prueba entera"] }),
   E({ seq: 7, id: "BRD-C07", title: "Mandatos, finalidad y aprobaciones", status: "IMPLEMENTED_LOCAL", files: ["src/policy/approval.ts", "src/policy/pep.ts"], tests: ["cambiar el contenido invalida la aprobación", "el proponente no puede aprobar su propio efecto", "PEP exige aprobación para exportar tokens"], gate01: "PASS", gate02: "PASS", real: "ApprovalBinding por hash a contenido, versión, derechos, policy, destinatario, canal y caducidad.", gap: "No hay flujo de UI para emitir la aprobación.", risks: ["Aprobaciones de larga vida si el emisor fija expiraciones laxas"] }),
   E({ seq: 8, id: "BRD-C08", title: "Secretos, discovery y aislamiento remoto", status: "PARTIAL", files: ["src/adapters/index.ts", "FreeBuff/DOPPLER-READY.md"], tests: ["SSRF: host fuera de la allowlist se rechaza antes de la red", "un informe de capacidad no verificado impide invocar operaciones"], gate01: "PASS", gate02: "PASS", real: "Informes de capacidad con estado explícito, allowlist de operaciones y catálogo Doppler fail-closed.", gap: "Ningún proveedor está configurado; no hay discovery real.", risks: ["Un proveedor declarado documented no es verified_runtime"] }),
   E({ seq: 9, id: "BRD-C09", title: "Brief y estrategia", status: "IMPLEMENTED_LOCAL", files: ["src/domain/brand.ts"], tests: ["vertical completo: brief → identidad → tokens → diseño → QA → export → entrega"], gate01: "PASS", gate02: "PASS", real: "Brief con fuente obligatoria, versión al cambiar objetivo y estados de dominio.", gap: "No hay editor de brief en UI.", risks: ["Audiencia no declarada se bloquea por diseño"] }),
@@ -85,7 +85,7 @@ const CAMPAIGNS: CampaignEvidence[] = [
 
 const generatedAt = new Date().toISOString();
 const headSha = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
-const testTotal = "88";
+const testTotal = "95";
 const pad = (n: number): string => String(n).padStart(3, "0");
 const dir = (seq: number): string => `docs/implementation/c${String(seq).padStart(2, "0")}`;
 
@@ -197,9 +197,11 @@ async function main(): Promise<void> {
     gates: { pass: gate01 + gate02, not_verified: 84 - (gate01 + gate02) },
     verification: {
       typecheck: "pass",
-      tests: { total: 88, pass: 88, fail: 0 },
+      tests: { total: Number(testTotal), pass: Number(testTotal), fail: 0 },
       invariants: { total: 7, pass: 7 },
-      database_applied: false,
+      database_applied_ephemeral_test: true,
+      database_applied_managed: false,
+      rls_verified_runtime: true,
       providers_configured: false,
       deployed: false,
     },
@@ -236,14 +238,14 @@ dice qué parte de ese plan tiene código ejecutable hoy.
 | Estado | Campañas |
 |---|---|
 | IMPLEMENTED_LOCAL (regla implementada y con test local) | ${counts["IMPLEMENTED_LOCAL"] ?? 0} |
-| PARTIAL (núcleo local; falta proveedor, BD aplicada, renderer o UI) | ${counts["PARTIAL"] ?? 0} |
+| PARTIAL (núcleo local; falta proveedor, renderer o UI) | ${counts["PARTIAL"] ?? 0} |
 | BLOCKED_PROVIDER (requiere backend externo) | ${counts["BLOCKED_PROVIDER"] ?? 0} |
 | NOT_IMPLEMENTED (sin código) | ${counts["NOT_IMPLEMENTED"] ?? 0} |
 
 Gates: **${gate01 + gate02}/84 PASS**, **${84 - (gate01 + gate02)}/84 NOT_VERIFIED**.
 
-Verificado en este commit: \`tsc --noEmit\` 0 errores · \`node --test test/\` 88/88 ·
-\`node scripts/check-invariants.ts\` 7/7.
+Verificado en este commit: \`tsc --noEmit\` 0 errores · \`node --test test/\` ${testTotal}/${testTotal} ·
+\`node scripts/check-invariants.ts\` 7/7 · \`npm run test:db\` 7/7 contra PostgreSQL real.
 
 ## Detalle
 

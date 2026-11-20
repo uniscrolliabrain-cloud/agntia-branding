@@ -1,9 +1,9 @@
 # BRD-C06 — riesgos y deuda
 
-- RLS no ejecutada es intención, no garantía
+- Un despliegue que conecte como superusuario o service_role anularía la prueba entera
 
 ## Límite de esta evidencia
 
-El esquema no se ha aplicado a una base real; las políticas no se han probado con dos sesiones.
+No se ha aplicado a un entorno gestionado (Supabase) ni con credenciales reales; el superusuario evade RLS por diseño y por eso no es el rol de la aplicación.
 
-La distancia entre esta campaña y un artefacto entregable está declarada arriba; no se ha disimulado con stubs silenciosos.
+El núcleo determinista está cubierto por tests locales. La integración real, el render final y la aceptación humana siguen pendientes.

@@ -11,7 +11,18 @@
 --
 -- Este esquema no se ha aplicado en ningún entorno real desde este repositorio.
 
-create extension if not exists pgcrypto;
+-- gen_random_uuid() es nativo desde PG13; pgcrypto solo hace falta en versiones
+-- antiguas y en algunas distribuciones mínimas no está disponible. Que falte no
+-- debe impedir migrar, pero tampoco se silencia en silencio: se avisa.
+do $$
+begin
+  begin
+    create extension if not exists pgcrypto;
+  exception when others then
+    raise notice 'pgcrypto no disponible; se usa gen_random_uuid() nativo (PG13+)';
+  end;
+end
+$$;
 
 do $$
 begin

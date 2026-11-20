@@ -1,8 +1,8 @@
 # BRD-C06 · Persistencia, RLS y migraciones — evidencia de implementación
 
-Estado: **PARTIAL**. Generado 2026-11-15T15:07:38.312Z sobre `6870a10a5f163fa3a07685f6facdcd6a9e8e7c61`.
+Estado: **IMPLEMENTED_LOCAL**. Generado 2026-11-20T13:46:48.852Z sobre `133db71b5c8d23b23f9bee98b2b3f853953c0302`.
 
-18 tablas con RLS y FORCE, FK compuestas por tenant, roles app_api/app_worker y seed A/B/P determinista.
+Esquema aplicado a un PostgreSQL 18 real: 18 tablas con RLS y FORCE, aislamiento A/B comprobado con app_api y app_worker, CHECK cruzado y FK compuesta rechazados.
 
 - Campaña original: [`docs/campaigns/06-`](../../campaigns/)
 - Programa de ejecución: [`CAMPAIGN.md`](../../execution-program/campaigns/006/CAMPAIGN.md)
@@ -10,10 +10,10 @@ Estado: **PARTIAL**. Generado 2026-11-15T15:07:38.312Z sobre `6870a10a5f163fa3a0
 
 ## Qué es real
 
-18 tablas con RLS y FORCE, FK compuestas por tenant, roles app_api/app_worker y seed A/B/P determinista.
+Esquema aplicado a un PostgreSQL 18 real: 18 tablas con RLS y FORCE, aislamiento A/B comprobado con app_api y app_worker, CHECK cruzado y FK compuesta rechazados.
 
 ## Qué falta
 
-El esquema no se ha aplicado a una base real; las políticas no se han probado con dos sesiones.
+No se ha aplicado a un entorno gestionado (Supabase) ni con credenciales reales; el superusuario evade RLS por diseño y por eso no es el rol de la aplicación.
 
 Ver también [EVIDENCE](EVIDENCE.md) · [TESTS](TESTS.md) · [RISKS](RISKS.md).

@@ -1,35 +1,37 @@
 {
   "schema_version": 1,
   "repository": "uniscrolliabrain-cloud/agntia-branding",
-  "generated_at": "2026-11-15T15:07:38.312Z",
-  "base_sha": "6870a10a5f163fa3a07685f6facdcd6a9e8e7c61",
+  "generated_at": "2026-11-20T13:46:48.852Z",
+  "base_sha": "133db71b5c8d23b23f9bee98b2b3f853953c0302",
   "program": {
     "campaigns": 42,
     "tasks": 294,
     "gates": 84
   },
   "status_counts": {
-    "IMPLEMENTED_LOCAL": 28,
-    "PARTIAL": 12,
+    "IMPLEMENTED_LOCAL": 29,
+    "PARTIAL": 11,
     "BLOCKED_PROVIDER": 1,
     "NOT_IMPLEMENTED": 1
   },
   "gates": {
-    "pass": 74,
-    "not_verified": 10
+    "pass": 75,
+    "not_verified": 9
   },
   "verification": {
     "typecheck": "pass",
     "tests": {
-      "total": 88,
-      "pass": 88,
+      "total": 95,
+      "pass": 95,
       "fail": 0
     },
     "invariants": {
       "total": 7,
       "pass": 7
     },
-    "database_applied": false,
+    "database_applied_ephemeral_test": true,
+    "database_applied_managed": false,
+    "rls_verified_runtime": true,
     "providers_configured": false,
     "deployed": false
   },
@@ -141,23 +143,26 @@
       "id": "BRD-C06",
       "sequence": 6,
       "title": "Persistencia, RLS y migraciones",
-      "status": "PARTIAL",
+      "status": "IMPLEMENTED_LOCAL",
       "files": [
         "src/db/schema.sql",
         "src/db/migrate.ts",
         "src/db/seed.ts",
-        "src/db/seed.sql"
+        "src/db/seed.sql",
+        "test/db-rls.test.ts"
       ],
       "tests": [
-        "schema: toda tabla habilita row level security",
-        "schema: FORCE row level security (el propietario tampoco evade)",
-        "schema: roles sin privilegios BYPASSRLS concedidos"
+        "cada tenant solo ve sus propios briefs con el rol de API",
+        "escribir con el tenant de otro se rechaza por WITH CHECK",
+        "sin tenant en sesión no se ve ninguna fila (fail-closed)",
+        "el worker puede leer pero no borrar historia",
+        "la FK compuesta impide enlazar un documento con datos de otro tenant"
       ],
       "gates": {
         "BRD-C06-G01": "PASS",
-        "BRD-C06-G02": "NOT_VERIFIED"
+        "BRD-C06-G02": "PASS"
       },
-      "gap": "El esquema no se ha aplicado a una base real; las políticas no se han probado con dos sesiones.",
+      "gap": "No se ha aplicado a un entorno gestionado (Supabase) ni con credenciales reales; el superusuario evade RLS por diseño y por eso no es el rol de la aplicación.",
       "evidence": "docs/implementation/c06/README.md"
     },
     {

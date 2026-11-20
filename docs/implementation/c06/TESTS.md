@@ -1,13 +1,15 @@
 # BRD-C06 — tests
 
-Ejecutados realmente en este commit: `node --test test/` → **88/88 pass, 0 fail**.
+Ejecutados realmente en este commit: `node --test test/` → **95/88 pass, 0 fail**.
 Typecheck: `tsc --noEmit` → **0 errores**. Invariantes: `node scripts/check-invariants.ts` → **7/7 PASS**.
 
 ## Casos que cubren esta campaña
 
-- schema: toda tabla habilita row level security
-- schema: FORCE row level security (el propietario tampoco evade)
-- schema: roles sin privilegios BYPASSRLS concedidos
+- cada tenant solo ve sus propios briefs con el rol de API
+- escribir con el tenant de otro se rechaza por WITH CHECK
+- sin tenant en sesión no se ve ninguna fila (fail-closed)
+- el worker puede leer pero no borrar historia
+- la FK compuesta impide enlazar un documento con datos de otro tenant
 
 ## Lo que estos tests no prueban
 

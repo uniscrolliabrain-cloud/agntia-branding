@@ -1,6 +1,6 @@
 # Matriz de estado de implementación
 
-Generado 2026-11-15T15:07:38.312Z sobre `6870a10a5f163fa3a07685f6facdcd6a9e8e7c61`. Fuente de verdad legible por máquina:
+Generado 2026-11-20T13:46:48.852Z sobre `133db71b5c8d23b23f9bee98b2b3f853953c0302`. Fuente de verdad legible por máquina:
 [`implementation-status.json`](implementation-status.json).
 
 **No sustituye al programa.** `docs/campaigns/campaign.json` sigue siendo el plan
@@ -11,15 +11,15 @@ dice qué parte de ese plan tiene código ejecutable hoy.
 
 | Estado | Campañas |
 |---|---|
-| IMPLEMENTED_LOCAL (regla implementada y con test local) | 28 |
-| PARTIAL (núcleo local; falta proveedor, BD aplicada, renderer o UI) | 12 |
+| IMPLEMENTED_LOCAL (regla implementada y con test local) | 29 |
+| PARTIAL (núcleo local; falta proveedor, renderer o UI) | 11 |
 | BLOCKED_PROVIDER (requiere backend externo) | 1 |
 | NOT_IMPLEMENTED (sin código) | 1 |
 
-Gates: **74/84 PASS**, **10/84 NOT_VERIFIED**.
+Gates: **75/84 PASS**, **9/84 NOT_VERIFIED**.
 
-Verificado en este commit: `tsc --noEmit` 0 errores · `node --test test/` 88/88 ·
-`node scripts/check-invariants.ts` 7/7.
+Verificado en este commit: `tsc --noEmit` 0 errores · `node --test test/` 95/95 ·
+`node scripts/check-invariants.ts` 7/7 · `npm run test:db` 7/7 contra PostgreSQL real.
 
 ## Detalle
 
@@ -30,7 +30,7 @@ Verificado en este commit: `tsc --noEmit` 0 errores · `node --test test/` 88/88
 | BRD-C03 | Supabase JWT y principal | PARTIAL | PASS | PASS | [evidencia](docs/implementation/c03/README.md) |
 | BRD-C04 | Twins y nomenclatura canónica | IMPLEMENTED_LOCAL | PASS | PASS | [evidencia](docs/implementation/c04/README.md) |
 | BRD-C05 | DTOs, esquemas y errores | IMPLEMENTED_LOCAL | PASS | PASS | [evidencia](docs/implementation/c05/README.md) |
-| BRD-C06 | Persistencia, RLS y migraciones | PARTIAL | PASS | NOT_VERIFIED | [evidencia](docs/implementation/c06/README.md) |
+| BRD-C06 | Persistencia, RLS y migraciones | IMPLEMENTED_LOCAL | PASS | PASS | [evidencia](docs/implementation/c06/README.md) |
 | BRD-C07 | Mandatos, finalidad y aprobaciones | IMPLEMENTED_LOCAL | PASS | PASS | [evidencia](docs/implementation/c07/README.md) |
 | BRD-C08 | Secretos, discovery y aislamiento remoto | PARTIAL | PASS | PASS | [evidencia](docs/implementation/c08/README.md) |
 | BRD-C09 | Brief y estrategia | IMPLEMENTED_LOCAL | PASS | PASS | [evidencia](docs/implementation/c09/README.md) |
@@ -70,7 +70,7 @@ Verificado en este commit: `tsc --noEmit` 0 errores · `node --test test/` 88/88
 
 ## Lo que este estado no significa
 
-- No significa "42 campañas terminadas". 12 campañas son parciales y 2 no tienen implementación utilizable.
+- No significa "42 campañas terminadas". 11 campañas son parciales y 2 no tienen implementación utilizable.
 - No significa proveedor verificado: ningún adaptador externo está configurado.
 - No significa base de datos aplicada: el esquema existe y se verifica estáticamente, pero no se ha ejecutado contra Postgres en este entorno.
 - No significa aceptación: no hay auditoría independiente ni visto bueno del owner.

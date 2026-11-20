@@ -58,7 +58,8 @@ scripts/         check-invariants.ts, generate-evidence.ts
 ```bash
 npm ci
 npm run typecheck                                   # tsc --noEmit → 0 errores
-npm test                                            # node --test test/ → 88/88
+npm test                                            # node --test test/ → 95/95
+npm run test:db                                     # RLS real: levanta PostgreSQL efímero, 7/7
 node scripts/check-invariants.ts                    # 7/7 (RLS, secretos, programa 42/294/84)
 node scripts/generate-evidence.ts                   # regenera cNN/* y STATUS.md
 ```
@@ -66,9 +67,24 @@ node scripts/generate-evidence.ts                   # regenera cNN/* y STATUS.md
 `migrate` y `seed` requieren `DATABASE_URL`; sin él terminan con código 2 y
 `NOT_CONFIGURED` en vez de fingir que aplicaron el esquema.
 
+## Persistencia: cómo se demuestra la RLS
+
+`test/db-rls.test.ts` arranca un clúster PostgreSQL 18 efímero (`.embedded-postgres`,
+binarios por npm, sin root ni Docker), aplica `schema.sql` y `seed.sql` y comprueba:
+
+- A y B sólo ven sus propias filas con el rol `app_api`;
+- un `INSERT` con el tenant del otro se rechaza por `WITH CHECK` (SQLSTATE 42501);
+- sin `app.tenant_id` en la sesión no se ve ninguna fila;
+- `app_worker` puede leer pero no `DELETE`;
+- la FK compuesta `(tenant_id, document_id)` impide enlazar un documento ajeno (23503);
+- la tabla `tenants` sólo expone el tenant propio.
+
+Límite explícito: `postgres` es superusuario y **evade RLS aunque haya FORCE**. Por eso
+la aplicación usa `app_api`/`app_worker` y nunca un superusuario ni `service_role`.
+
 ## Qué no se ha hecho aquí
 
-- Aplicar el esquema a una base real y probar RLS con dos sesiones.
+- Aplicar el esquema a un entorno gestionado (Supabase) con credenciales reales.
 - Configurar Supabase, Penpot, Anam o un gateway de modelos.
 - Generar bytes PDF/PNG/SVG reales.
 - Construir portal, chat ni sesión AV.

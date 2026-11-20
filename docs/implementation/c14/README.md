@@ -1,6 +1,6 @@
 # BRD-C14 · Direcciones visuales — evidencia de implementación
 
-Estado: **IMPLEMENTED_LOCAL**. Generado 2026-11-15T15:07:38.312Z sobre `6870a10a5f163fa3a07685f6facdcd6a9e8e7c61`.
+Estado: **IMPLEMENTED_LOCAL**. Generado 2026-11-20T13:46:48.852Z sobre `133db71b5c8d23b23f9bee98b2b3f853953c0302`.
 
 Referencias separadas en inspiration_only vs redistributable con rightsRef.
 
