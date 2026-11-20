@@ -10,6 +10,8 @@ export const ERROR_CODES = [
   // input / business
   "invalid_input",
   "unsupported_capability",
+  /** The capability exists, but this artifact or format cannot be produced truthfully. */
+  "unsupported_operation",
   "policy_violation",
   // auth
   "unauthenticated",
@@ -40,6 +42,7 @@ export type ErrorCode = (typeof ERROR_CODES)[number];
 const STATUS: Record<ErrorCode, number> = {
   invalid_input: 400,
   unsupported_capability: 400,
+  unsupported_operation: 400,
   policy_violation: 403,
   unauthenticated: 401,
   membership_missing: 403,

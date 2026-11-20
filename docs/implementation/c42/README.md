@@ -1,6 +1,6 @@
 # BRD-C42 · Aceptación, evidencia y handoff final — evidencia de implementación
 
-Estado: **PARTIAL**. Generado 2026-11-20T13:46:48.852Z sobre `133db71b5c8d23b23f9bee98b2b3f853953c0302`.
+Estado: **PARTIAL**. Generado 2026-11-20T14:55:10.407Z sobre `d0be6c7a7c66ff8e6961474237a8197ab127c5d1`.
 
 Evidencia generada por campaña, matriz de estado y comandos reproducibles.
 

@@ -2,7 +2,7 @@
 
 Branding, diseño y sistemas de marca: diseño de empresa SaaS especialista con middleware hacia AgntiaPro/`agente`. Entrega documental de la familia Agntia · 2026-11-13.
 
-**IMPLEMENTACIÓN PARCIAL Y LOCAL. Hay código TypeScript ejecutable, typecheck limpio y 95 tests reales en verde, incluida la RLS probada contra un PostgreSQL 18 efímero; no hay proveedores conectados, ni entorno gestionado, ni despliegue.** Las 42 campañas originales siguen intactas en el manifest; su estado de implementación real vive en [la matriz de estado](docs/implementation/STATUS.md) (29 implementadas en local, 11 parciales, 1 bloqueada por proveedor, 1 sin implementar; 75/84 gates PASS sobre reglas locales). Aspiración de calidad inspirada en referentes mundiales; no afirmación de paridad, certificación o cumplimiento universal.
+**IMPLEMENTACIÓN PARCIAL Y LOCAL. Hay código TypeScript ejecutable, typecheck limpio y 102 tests reales en verde, incluida la RLS probada contra un PostgreSQL 18 efímero y el render de PDF/PNG/SVG con hash de bytes; no hay proveedores conectados, ni entorno gestionado, ni despliegue.** Las 42 campañas originales siguen intactas en el manifest; su estado de implementación real vive en [la matriz de estado](docs/implementation/STATUS.md) (30 implementadas en local, 10 parciales, 1 bloqueada por proveedor, 1 sin implementar; 75/84 gates PASS sobre reglas locales). Aspiración de calidad inspirada en referentes mundiales; no afirmación de paridad, certificación o cumplimiento universal.
 
 Entregar identidad y materiales de marca editables, coherentes, accesibles y trazables con revisión humana y derechos de uso demostrables.
 
@@ -17,6 +17,8 @@ npm ci && npm run typecheck && npm test && node scripts/check-invariants.ts
 ```
 
 Ningún adaptador externo (Penpot, Anam, gateway de modelos, Supabase) está configurado: se declaran `not_configured` y no se simulan. Sin `DATABASE_URL`, `migrate`/`seed` salen con `NOT_CONFIGURED`.
+
+`src/domain/render.ts` produce los bytes: PDF 1.4 con xref real, PNG con IHDR/IDAT/zlib y SVG, todo sin dependencias y determinista byte a byte. Cuando el render sustituye algo que el manifiesto prometía (Helvetica en el PDF, bitmap 5x7 en el PNG) devuelve un *finding* y **no emite el archivo** hasta que el llamante lo acepta de forma explícita.
 
 `test/db-rls.test.ts` levanta un PostgreSQL efímero, aplica `schema.sql` y `seed.sql` y demuestra el aislamiento A/B con `app_api` y `app_worker`, incluido el rechazo de escritura cruzada y el fail-closed sin tenant en sesión. En CI corre en un job propio con `REQUIRE_DB=1`, de modo que un salto silencioso falla.
 

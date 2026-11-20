@@ -1,8 +1,8 @@
 # BRD-C17 · Documento vectorial — evidencia de implementación
 
-Estado: **IMPLEMENTED_LOCAL**. Generado 2026-11-20T13:46:48.852Z sobre `133db71b5c8d23b23f9bee98b2b3f853953c0302`.
+Estado: **IMPLEMENTED_LOCAL**. Generado 2026-11-20T14:55:10.407Z sobre `d0be6c7a7c66ff8e6961474237a8197ab127c5d1`.
 
-DesignDocument con nodos, constraints, textSources, CAS y hash de render por engine+fonts.
+DesignDocument con nodos, constraints, textSources, CAS y hash de render por engine+fonts, ya proyectado a bytes por el renderer.
 
 - Campaña original: [`docs/campaigns/17-`](../../campaigns/)
 - Programa de ejecución: [`CAMPAIGN.md`](../../execution-program/campaigns/017/CAMPAIGN.md)
@@ -10,10 +10,10 @@ DesignDocument con nodos, constraints, textSources, CAS y hash de render por eng
 
 ## Qué es real
 
-DesignDocument con nodos, constraints, textSources, CAS y hash de render por engine+fonts.
+DesignDocument con nodos, constraints, textSources, CAS y hash de render por engine+fonts, ya proyectado a bytes por el renderer.
 
 ## Qué falta
 
-Sin rasterizador: no se producen bytes de imagen.
+El renderer sólo dibuja rectángulos, elipses y texto: path, imagen y grupo fallan cerrado en vez de desaparecer.
 
 Ver también [EVIDENCE](EVIDENCE.md) · [TESTS](TESTS.md) · [RISKS](RISKS.md).

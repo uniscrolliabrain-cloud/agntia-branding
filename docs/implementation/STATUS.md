@@ -1,6 +1,6 @@
 # Matriz de estado de implementación
 
-Generado 2026-11-20T13:46:48.852Z sobre `133db71b5c8d23b23f9bee98b2b3f853953c0302`. Fuente de verdad legible por máquina:
+Generado 2026-11-20T14:55:10.407Z sobre `d0be6c7a7c66ff8e6961474237a8197ab127c5d1`. Fuente de verdad legible por máquina:
 [`implementation-status.json`](implementation-status.json).
 
 **No sustituye al programa.** `docs/campaigns/campaign.json` sigue siendo el plan
@@ -11,14 +11,14 @@ dice qué parte de ese plan tiene código ejecutable hoy.
 
 | Estado | Campañas |
 |---|---|
-| IMPLEMENTED_LOCAL (regla implementada y con test local) | 29 |
-| PARTIAL (núcleo local; falta proveedor, renderer o UI) | 11 |
+| IMPLEMENTED_LOCAL (regla implementada y con test local) | 30 |
+| PARTIAL (núcleo local; falta proveedor, canal o UI) | 10 |
 | BLOCKED_PROVIDER (requiere backend externo) | 1 |
 | NOT_IMPLEMENTED (sin código) | 1 |
 
 Gates: **75/84 PASS**, **9/84 NOT_VERIFIED**.
 
-Verificado en este commit: `tsc --noEmit` 0 errores · `node --test test/` 95/95 ·
+Verificado en este commit: `tsc --noEmit` 0 errores · `node --test test/` 102/102 ·
 `node scripts/check-invariants.ts` 7/7 · `npm run test:db` 7/7 contra PostgreSQL real.
 
 ## Detalle
@@ -54,7 +54,7 @@ Verificado en este commit: `tsc --noEmit` 0 errores · `node --test test/` 95/95
 | BRD-C27 | QA de texto | IMPLEMENTED_LOCAL | PASS | PASS | [evidencia](docs/implementation/c27/README.md) |
 | BRD-C28 | QA visual y revisión | PARTIAL | PASS | PASS | [evidencia](docs/implementation/c28/README.md) |
 | BRD-C29 | Brandbook y reglas | IMPLEMENTED_LOCAL | PASS | PASS | [evidencia](docs/implementation/c29/README.md) |
-| BRD-C30 | Export y preflight | PARTIAL | PASS | PASS | [evidencia](docs/implementation/c30/README.md) |
+| BRD-C30 | Export y preflight | IMPLEMENTED_LOCAL | PASS | PASS | [evidencia](docs/implementation/c30/README.md) |
 | BRD-C31 | Entrega y publicación | PARTIAL | PASS | PASS | [evidencia](docs/implementation/c31/README.md) |
 | BRD-C32 | Aprendizaje y librería | IMPLEMENTED_LOCAL | PASS | PASS | [evidencia](docs/implementation/c32/README.md) |
 | BRD-C33 | Reportes, dashboard e infografías | PARTIAL | PASS | PASS | [evidencia](docs/implementation/c33/README.md) |
@@ -70,7 +70,7 @@ Verificado en este commit: `tsc --noEmit` 0 errores · `node --test test/` 95/95
 
 ## Lo que este estado no significa
 
-- No significa "42 campañas terminadas". 11 campañas son parciales y 2 no tienen implementación utilizable.
+- No significa "42 campañas terminadas". 10 campañas son parciales y 2 no tienen implementación utilizable.
 - No significa proveedor verificado: ningún adaptador externo está configurado.
 - No significa base de datos aplicada: el esquema existe y se verifica estáticamente, pero no se ha ejecutado contra Postgres en este entorno.
 - No significa aceptación: no hay auditoría independiente ni visto bueno del owner.

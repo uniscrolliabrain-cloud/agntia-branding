@@ -4,7 +4,7 @@
 
 ## Resumen en una frase
 
-Hay **código ejecutable y probado**: 29 campañas con regla local implementada y test, 11 parciales, 1 bloqueada por proveedor externo y 1 sin implementar; **95 tests reales en verde, typecheck limpio, CI que corre ambas cosas**, **75/84 gates PASS sobre reglas locales**, **RLS demostrada contra PostgreSQL real** y **0 proveedores, 0 entorno gestionado, 0 despliegues**. Nada se declara terminado por existir en un documento.
+Hay **código ejecutable y probado**: 30 campañas con regla local implementada y test, 10 parciales, 1 bloqueada por proveedor externo y 1 sin implementar; **102 tests reales en verde, typecheck limpio, CI que corre ambas cosas**, **75/84 gates PASS sobre reglas locales**, **RLS demostrada contra PostgreSQL real**, **PDF/PNG/SVG reales con hash de bytes** y **0 proveedores, 0 entorno gestionado, 0 despliegues**. Nada se declara terminado por existir en un documento.
 
 ## 1. Estado inicial y SHA
 
@@ -20,13 +20,13 @@ Hay **código ejecutable y probado**: 29 campañas con regla local implementada 
 | Estado | Campañas | Significado |
 |---|---|---|
 | `IMPLEMENTED_LOCAL` | **29** | La regla de la campaña está implementada y ejercitada por un test que pasa |
-| `PARTIAL` | **11** | Núcleo local real; falta proveedor, renderer o UI |
+| `PARTIAL` | **10** | Núcleo local real; falta proveedor, canal o UI |
 | `BLOCKED_PROVIDER` | **1** | C18 Penpot: no hay instancia, OAuth ni ACL remota |
 | `NOT_IMPLEMENTED` | **1** | C34 portal/chat/Anam: sin UI ni sesión AV |
 
 Detalle por campaña: [STATUS.md](../docs/implementation/STATUS.md) · máquina: [implementation-status.json](../docs/implementation/implementation-status.json) · evidencia: `docs/implementation/cNN/{README,EVIDENCE,TESTS,RISKS}.md` (168 archivos generados).
 
-Parciales y por qué: C03 (JWKS sin proyecto Supabase real), C08 (sin proveedores), C10 (sin fuentes reales), C12 (clearance inconcluso por diseño), C28 (sin juez de visión), C30 (sin renderer de bytes), C31 (sin canal real de entrega), C33 (sin dashboard), C36 (bridge del padre sin verificar), C41 (sin backup/deploy), C42 (sin auditoría externa).
+Parciales y por qué: C03 (JWKS sin proyecto Supabase real), C08 (sin proveedores), C10 (sin fuentes reales), C12 (clearance inconcluso por diseño), C28 (sin juez de visión), C31 (sin canal real de entrega), C33 (sin dashboard), C36 (bridge del padre sin verificar), C41 (sin backup/deploy), C42 (sin auditoría externa).
 
 ## 3. Código reutilizado y código nuevo
 
@@ -42,12 +42,12 @@ Parciales y por qué: C03 (JWKS sin proyecto Supabase real), C08 (sin proveedore
 | Comprobación | Comando | Resultado |
 |---|---|---|
 | Typecheck estricto | `npm run typecheck` | **0 errores** |
-| Suite | `npm test` | **95/95 pass, 0 fail** |
+| Suite | `npm test` | **102/102 pass, 0 fail** |
 | RLS real | `npm run test:db` | **7/7 pass** contra PostgreSQL 18 efímero |
 | Invariantes de repo | `node scripts/check-invariants.ts` | **7/7 PASS** (RLS en 18 tablas, FORCE, sin BYPASSRLS, sin secretos, 42/294/84, sin PASS contradictorio) |
 | CI | `.github/workflows/ci.yml` | typecheck + tests + invariantes en Node 24 y 26 |
 
-Cobertura real de la suite: JWT (firma, iss, aud, exp, `alg:none`, membresía, tenant cruzado, suspensión), policy (autoaprobación, invalidación por hash/versión/derechos/destinatario/caducidad/revocación, mandato caducado/revocado/fuera de scope/ampliación), idempotencia (replay, conflicto, outcome desconocido), outbox (dedup, ACK, dead-letter), presupuesto (sobrespaso, liquidación), documento (CAS, nodo bloqueado, diff, render determinista), SVG (script, `on*`, entidad, `foreignObject`, URL externa, data URI, allowlist), paleta (ratio 21, fallo AA), tokens (ciclo, cambio de tipo, export reproducible), QA (deriva numérica, estética no compensa), export (fuente sin licencia, derechos caducados, DPI), entrega, brandbook, learning, handoff, reports, API (401, identidad inyectada, replay, aislamiento cross-tenant) y E2E del vertical.
+Cobertura real de la suite: JWT (firma, iss, aud, exp, `alg:none`, membresía, tenant cruzado, suspensión), policy (autoaprobación, invalidación por hash/versión/derechos/destinatario/caducidad/revocación, mandato caducado/revocado/fuera de scope/ampliación), idempotencia (replay, conflicto, outcome desconocido), outbox (dedup, ACK, dead-letter), presupuesto (sobrespaso, liquidación), documento (CAS, nodo bloqueado, diff, render determinista), render (PNG decodificado píxel a píxel, xref del PDF, escapado de SVG, fallo cerrado sin glifo o sin motor), SVG (script, `on*`, entidad, `foreignObject`, URL externa, data URI, allowlist), paleta (ratio 21, fallo AA), tokens (ciclo, cambio de tipo, export reproducible), QA (deriva numérica, estética no compensa), export (fuente sin licencia, derechos caducados, DPI), entrega, brandbook, learning, handoff, reports, API (401, identidad inyectada, replay, aislamiento cross-tenant) y E2E del vertical.
 
 ## 6. Gates superados y pendientes
 
@@ -67,7 +67,8 @@ Un `PASS` aquí significa: la regla local se ejecuta y **falla en cerrado** con 
 |---|---|---|
 | RLS probada en clúster efímero, no en entorno gestionado | Media | `test/db-rls.test.ts` con A/B y roles reales; falta Supabase con credenciales |
 | Un despliegue que conecte como superusuario anularía la RLS | Alta | Roles `app_api`/`app_worker`, documentado y sin grants de bypass |
-| Sin renderer real: el manifiesto no produce bytes | Alta | Identidad de render y preflight existen; falta motor |
+| Renderer propio: sólo rectángulo, elipse y texto | Media | PDF/PNG/SVG reales y deterministas; `path` e imagen embebida fallan cerrado |
+| PDF con Helvetica base-14 y PNG con bitmap 5x7, no la fuente licenciada | Alta de fidelidad | Toda sustitución se declara y exige aceptación explícita antes de emitir bytes |
 | Portal/chat/Anam inexistentes | Media | Declarado `NOT_IMPLEMENTED` |
 | Licencias tipográficas no leídas por familia | Alta de dominio | Sin verificación → sin render/export |
 | Clearance puede leerse como dictamen | Media | `professionalReviewRequired: true` siempre, veredicto máximo `no_conflict_observed` |
@@ -95,7 +96,7 @@ Deuda asumida conscientemente: un solo paquete en vez de workspace, handler Web 
 
 1. **Revisar y fusionar la rama de ejecución** tras auditoría independiente (Codex Cloud) del SHA final.
 2. **Aplicar el esquema a un Supabase de staging** con credenciales reales y repetir allí la prueba A/B que ya pasa en local.
-3. **Elegir el camino del renderer** (Penpot como backend o motor propio). Sin bytes reales, C30/C31/C17 no cierran.
+3. **Decidir si el renderer propio se queda o se sustituye por Penpot** cuando haya instancia: C30 ya cierra con motor propio; C18 sigue bloqueado por proveedor.
 4. **Leer licencias de las familias tipográficas** antes de habilitar cualquier fuente.
 5. **Decidir sobre portal/Anam** (C34): es la única campaña sin código.
 

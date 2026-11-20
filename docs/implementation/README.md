@@ -1,6 +1,6 @@
 # Índice de 42 campañas — Branding
 
-**Estado vigente: ver [STATUS.md](STATUS.md) y [implementation-status.json](implementation-status.json).** Desde 2026-11-15 existe implementación ejecutable: 29 campañas con regla local probada, 11 parciales, 1 bloqueada por proveedor y 1 sin implementar; 75/84 gates PASS sobre reglas locales, ninguno por proveedor real. La persistencia y la RLS no son intención: se prueban contra un PostgreSQL 18 efímero con dos tenants.
+**Estado vigente: ver [STATUS.md](STATUS.md) y [implementation-status.json](implementation-status.json).** Desde 2026-11-15 existe implementación ejecutable: 30 campañas con regla local probada, 10 parciales, 1 bloqueada por proveedor y 1 sin implementar; 75/84 gates PASS sobre reglas locales, ninguno por proveedor real. La persistencia y la RLS no son intención: se prueban contra un PostgreSQL 18 efímero con dos tenants. La exportación tampoco: `src/domain/render.ts` emite PDF, PNG y SVG reales y verificables por hash.
 
 Los 42 scaffolds de abajo siguen siendo conceptuales y no se han movido: la evidencia de cada campaña vive en `docs/implementation/cNN/`, como pedía el manifest. Las 42 campañas, 294 tareas y 84 gates del manifest original se preservan sin reescribir. [Originales](../campaigns/README.md) · [Factory](../factory/00-README.md) · [Producto](../factory/04-PRODUCTO-BRANDING.md) · [Léxico](../factory/02-LEXICO.md) · [ADTC](../factory/03-TRACE-OBSERVABILITY.md) · [Handoffs marco](../factory/01-PIPELINE.md).
 

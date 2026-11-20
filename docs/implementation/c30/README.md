@@ -1,8 +1,8 @@
 # BRD-C30 · Export y preflight — evidencia de implementación
 
-Estado: **PARTIAL**. Generado 2026-11-20T13:46:48.852Z sobre `133db71b5c8d23b23f9bee98b2b3f853953c0302`.
+Estado: **IMPLEMENTED_LOCAL**. Generado 2026-11-20T14:55:10.407Z sobre `d0be6c7a7c66ff8e6961474237a8197ab127c5d1`.
 
-ExportManifest ligado a editable, render, fuente, derechos, DPI y perfil.
+Manifiesto ligado a editable/render/fuente/derechos/DPI/perfil y bytes reales de PDF, PNG y SVG generados sin dependencias, con sha256 del archivo y aceptación explícita de toda sustitución.
 
 - Campaña original: [`docs/campaigns/30-`](../../campaigns/)
 - Programa de ejecución: [`CAMPAIGN.md`](../../execution-program/campaigns/030/CAMPAIGN.md)
@@ -10,10 +10,10 @@ ExportManifest ligado a editable, render, fuente, derechos, DPI y perfil.
 
 ## Qué es real
 
-ExportManifest ligado a editable, render, fuente, derechos, DPI y perfil.
+Manifiesto ligado a editable/render/fuente/derechos/DPI/perfil y bytes reales de PDF, PNG y SVG generados sin dependencias, con sha256 del archivo y aceptación explícita de toda sustitución.
 
 ## Qué falta
 
-No se generan bytes PDF/PNG: no hay renderer.
+El PDF usa base-14 Helvetica y el PNG un bitmap 5x7 integrado: no se embebe la fuente licenciada, y path/imagen embebida fallan cerrado porque el modelo no los dibuja.
 
 Ver también [EVIDENCE](EVIDENCE.md) · [TESTS](TESTS.md) · [RISKS](RISKS.md).

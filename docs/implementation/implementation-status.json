@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
   "repository": "uniscrolliabrain-cloud/agntia-branding",
-  "generated_at": "2026-11-20T13:46:48.852Z",
-  "base_sha": "133db71b5c8d23b23f9bee98b2b3f853953c0302",
+  "generated_at": "2026-11-20T14:55:10.407Z",
+  "base_sha": "d0be6c7a7c66ff8e6961474237a8197ab127c5d1",
   "program": {
     "campaigns": 42,
     "tasks": 294,
     "gates": 84
   },
   "status_counts": {
-    "IMPLEMENTED_LOCAL": 29,
-    "PARTIAL": 11,
+    "IMPLEMENTED_LOCAL": 30,
+    "PARTIAL": 10,
     "BLOCKED_PROVIDER": 1,
     "NOT_IMPLEMENTED": 1
   },
@@ -21,8 +21,8 @@
   "verification": {
     "typecheck": "pass",
     "tests": {
-      "total": 95,
-      "pass": 95,
+      "total": 102,
+      "pass": 102,
       "fail": 0
     },
     "invariants": {
@@ -358,17 +358,19 @@
       "title": "Documento vectorial",
       "status": "IMPLEMENTED_LOCAL",
       "files": [
-        "src/domain/document.ts"
+        "src/domain/document.ts",
+        "src/domain/render.ts"
       ],
       "tests": [
         "el render es determinista y cambia si cambia la fuente",
-        "CAS: editar con versión antigua produce conflicto"
+        "CAS: editar con versión antigua produce conflicto",
+        "render PNG es determinista byte a byte"
       ],
       "gates": {
         "BRD-C17-G01": "PASS",
         "BRD-C17-G02": "PASS"
       },
-      "gap": "Sin rasterizador: no se producen bytes de imagen.",
+      "gap": "El renderer sólo dibuja rectángulos, elipses y texto: path, imagen y grupo fallan cerrado en vez de desaparecer.",
       "evidence": "docs/implementation/c17/README.md"
     },
     {
@@ -596,19 +598,26 @@
       "id": "BRD-C30",
       "sequence": 30,
       "title": "Export y preflight",
-      "status": "PARTIAL",
+      "status": "IMPLEMENTED_LOCAL",
       "files": [
-        "src/domain/export.ts"
+        "src/domain/export.ts",
+        "src/domain/render.ts",
+        "scripts/render-smoke.ts"
       ],
       "tests": [
         "preflight produce manifiesto ligado a documento, fuente y derechos",
-        "preflight rechaza PDF por debajo de 300 dpi"
+        "preflight rechaza PDF por debajo de 300 dpi",
+        "render PNG produce bytes reales y exige aceptar la sustitución de tipografía",
+        "render PDF es estructuralmente válido: xref apunta a cada objeto",
+        "render SVG entrega vector con el texto escapado y sin sustituciones",
+        "el render falla cerrado ante lo que no puede dibujar con verdad",
+        "el render se ata al manifiesto: versión distinta o documento editado no producen bytes"
       ],
       "gates": {
         "BRD-C30-G01": "PASS",
         "BRD-C30-G02": "PASS"
       },
-      "gap": "No se generan bytes PDF/PNG: no hay renderer.",
+      "gap": "El PDF usa base-14 Helvetica y el PNG un bitmap 5x7 integrado: no se embebe la fuente licenciada, y path/imagen embebida fallan cerrado porque el modelo no los dibuja.",
       "evidence": "docs/implementation/c30/README.md"
     },
     {

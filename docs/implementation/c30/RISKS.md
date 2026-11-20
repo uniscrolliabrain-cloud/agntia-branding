@@ -1,9 +1,9 @@
 # BRD-C30 — riesgos y deuda
 
-- Manifiesto sin archivo real no es un entregable
+- Un PDF con Helvetica no es el tipo licenciado: el manifiesto lo declara y exige aceptación
 
 ## Límite de esta evidencia
 
-No se generan bytes PDF/PNG: no hay renderer.
+El PDF usa base-14 Helvetica y el PNG un bitmap 5x7 integrado: no se embebe la fuente licenciada, y path/imagen embebida fallan cerrado porque el modelo no los dibuja.
 
-La distancia entre esta campaña y un artefacto entregable está declarada arriba; no se ha disimulado con stubs silenciosos.
+El núcleo determinista está cubierto por tests locales. La integración real, el render final y la aceptación humana siguen pendientes.

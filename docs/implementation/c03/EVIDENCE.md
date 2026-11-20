@@ -1,6 +1,6 @@
 # BRD-C03 — evidencia
 
-SHA base: `133db71b5c8d23b23f9bee98b2b3f853953c0302` · generado 2026-11-20T13:46:48.852Z.
+SHA base: `d0be6c7a7c66ff8e6961474237a8197ab127c5d1` · generado 2026-11-20T14:55:10.407Z.
 
 ## Arquivos
 

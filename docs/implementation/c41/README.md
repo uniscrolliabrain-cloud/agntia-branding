@@ -1,6 +1,6 @@
 # BRD-C41 · Operaciones, CI, backup y release — evidencia de implementación
 
-Estado: **PARTIAL**. Generado 2026-11-20T13:46:48.852Z sobre `133db71b5c8d23b23f9bee98b2b3f853953c0302`.
+Estado: **PARTIAL**. Generado 2026-11-20T14:55:10.407Z sobre `d0be6c7a7c66ff8e6961474237a8197ab127c5d1`.
 
 CI con typecheck, tests e invariantes en Node 24/26; migrate/seed fallan en cerrado sin DATABASE_URL.
 

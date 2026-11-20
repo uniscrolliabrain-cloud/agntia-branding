@@ -58,7 +58,7 @@ scripts/         check-invariants.ts, generate-evidence.ts
 ```bash
 npm ci
 npm run typecheck                                   # tsc --noEmit → 0 errores
-npm test                                            # node --test test/ → 95/95
+npm test                                            # node --test test/ → 102/102
 npm run test:db                                     # RLS real: levanta PostgreSQL efímero, 7/7
 node scripts/check-invariants.ts                    # 7/7 (RLS, secretos, programa 42/294/84)
 node scripts/generate-evidence.ts                   # regenera cNN/* y STATUS.md
@@ -81,6 +81,24 @@ binarios por npm, sin root ni Docker), aplica `schema.sql` y `seed.sql` y compru
 
 Límite explícito: `postgres` es superusuario y **evade RLS aunque haya FORCE**. Por eso
 la aplicación usa `app_api`/`app_worker` y nunca un superusuario ni `service_role`.
+
+## Render: qué sustituye y por qué lo dice
+
+`src/domain/render.ts` escribe PDF 1.4 (con tabla xref), PNG (IHDR/pHYs/IDAT con
+deflate) y SVG desde el `DesignDocument`, sin dependencias ni red. Es determinista:
+mismos nodos, mismos bytes.
+
+No puede embeber una fuente que no tiene, así que el PDF referencia Helvetica
+base-14 y el PNG usa un bitmap 5x7 propio. Ambas cosas son sustituciones:
+`renderDocument` devuelve `findings` y **lanza en vez de escribir el archivo** si
+el llamante no pasa `acceptFindings: true`. Ese es el "font fallback no
+silencioso" de C16 aplicado al borde de salida.
+
+Lo que el modelo no puede dibujar con verdad (`path`, `image`, `group`) falla con
+`unsupported_operation` y el id del nodo, en lugar de desaparecer del render.
+
+`node scripts/render-smoke.ts` deja tres archivos en `artifacts/render/` con su
+sha256 para inspección humana.
 
 ## Qué no se ha hecho aquí
 
