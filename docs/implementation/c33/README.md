@@ -1,6 +1,6 @@
 # BRD-C33 · Reportes, dashboard e infografías — evidencia de implementación
 
-Estado: **PARTIAL**. Generado 2026-11-20T14:56:38.332Z sobre `deb6e59400fea8f07ece16613be90b2145ec00be`.
+Estado: **PARTIAL**. Generado 2026-11-21T16:18:09.403Z sobre `7de366159bb14a3fd2f8639a443090dbf5f652d8`.
 
 Snapshot con cobertura, watermark, métricas con fuente y missingData obligatorio.
 

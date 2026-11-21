@@ -44,3 +44,18 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - name: rls integration
         run: npm run test:db
+
+  # A build that compiles is not a package somebody can install. This job packs
+  # the tarball, installs it into an empty project and runs the installed CLI and
+  # an ESM import from node_modules.
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: tarball install smoke
+        run: node scripts/package-smoke.ts

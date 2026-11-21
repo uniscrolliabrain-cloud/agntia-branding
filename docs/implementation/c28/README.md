@@ -1,6 +1,6 @@
 # BRD-C28 · QA visual y revisión — evidencia de implementación
 
-Estado: **PARTIAL**. Generado 2026-11-20T14:56:38.332Z sobre `deb6e59400fea8f07ece16613be90b2145ec00be`.
+Estado: **PARTIAL**. Generado 2026-11-21T16:18:09.403Z sobre `7de366159bb14a3fd2f8639a443090dbf5f652d8`.
 
 Puerta de calidad que exige texto fiel, contraste, derechos y constraints, más pixel diff con tolerancia declarada que detecta cambios invisibles y cambios que se salen de su nodo.
 

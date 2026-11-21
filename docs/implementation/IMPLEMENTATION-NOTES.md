@@ -21,8 +21,8 @@ src/
   db/            schema.sql (18 tablas, RLS, FK compuestas), migrate.ts, seed.ts
   cost/          reserva y liquidación con decimales exactos
   obs/           ADTC, proyección a SystemEvent, redacción de logs
-test/            88 casos (auth, policy, runtime, domain, export, api, adversarial, e2e)
-scripts/         check-invariants.ts, generate-evidence.ts
+test/            133 casos (auth, policy, runtime, domain, export, api, adversarial, e2e, config, slices, cli, server)
+scripts/         check-invariants.ts, generate-evidence.ts, render-smoke.ts, copy-assets.ts, package-smoke.ts
 ```
 
 ## Desviaciones conscientes y por qué
@@ -58,9 +58,11 @@ scripts/         check-invariants.ts, generate-evidence.ts
 ```bash
 npm ci
 npm run typecheck                                   # tsc --noEmit → 0 errores
-npm test                                            # node --test test/ → 108/108
+npm test                                            # node --test test/ → 133/133
 npm run test:db                                     # RLS real: levanta PostgreSQL efímero, 7/7
-node scripts/check-invariants.ts                    # 7/7 (RLS, secretos, programa 42/294/84)
+node scripts/check-invariants.ts                    # 9/9 (RLS, secretos, programa 42/294/84, slices, paquete)
+npm run build                                       # dist/ con JS, .d.ts y SQL revisado
+npm run check:package                               # pack + install en proyecto vacío + CLI + ESM
 node scripts/generate-evidence.ts                   # regenera cNN/* y STATUS.md
 ```
 

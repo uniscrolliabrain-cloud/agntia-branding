@@ -1,6 +1,6 @@
 # BRD-C08 · Secretos, discovery y aislamiento remoto — evidencia de implementación
 
-Estado: **PARTIAL**. Generado 2026-11-20T14:56:38.332Z sobre `deb6e59400fea8f07ece16613be90b2145ec00be`.
+Estado: **PARTIAL**. Generado 2026-11-21T16:18:09.403Z sobre `7de366159bb14a3fd2f8639a443090dbf5f652d8`.
 
 Informes de capacidad con estado explícito, allowlist de operaciones y catálogo Doppler fail-closed.
 

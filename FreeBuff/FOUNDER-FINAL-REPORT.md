@@ -4,7 +4,7 @@
 
 ## Resumen en una frase
 
-Hay **código ejecutable y probado**: 30 campañas con regla local implementada y test, 10 parciales, 1 bloqueada por proveedor externo y 1 sin implementar; **108 tests reales en verde, typecheck limpio, CI que corre ambas cosas**, **75/84 gates PASS sobre reglas locales**, **RLS demostrada contra PostgreSQL real**, **PDF/PNG/SVG reales con hash de bytes** y **0 proveedores, 0 entorno gestionado, 0 despliegues**. Nada se declara terminado por existir en un documento.
+Hay **código ejecutable y probado**: 30 campañas con regla local implementada y test, 10 parciales, 1 bloqueada por proveedor externo y 1 sin implementar; **133 tests reales en verde, typecheck limpio, CI que corre ambas cosas**, **paquete instalable probado desde tarball en un proyecto vacío**, **75/84 gates PASS sobre reglas locales**, **RLS demostrada contra PostgreSQL real**, **PDF/PNG/SVG reales con hash de bytes** y **0 proveedores, 0 entorno gestionado, 0 despliegues**. Nada se declara terminado por existir en un documento.
 
 ## 1. Estado inicial y SHA
 
@@ -42,9 +42,10 @@ Parciales y por qué: C03 (JWKS sin proyecto Supabase real), C08 (sin proveedore
 | Comprobación | Comando | Resultado |
 |---|---|---|
 | Typecheck estricto | `npm run typecheck` | **0 errores** |
-| Suite | `npm test` | **108/108 pass, 0 fail** |
+| Suite | `npm test` | **133/133 pass, 0 fail** |
+| Paquete instalable | `npm run check:package` | **5/5**: build, pack, install en proyecto vacío, CLI `doctor`, API ESM desde `node_modules` |
 | RLS real | `npm run test:db` | **7/7 pass** contra PostgreSQL 18 efímero |
-| Invariantes de repo | `node scripts/check-invariants.ts` | **7/7 PASS** (RLS en 18 tablas, FORCE, sin BYPASSRLS, sin secretos, 42/294/84, sin PASS contradictorio) |
+| Invariantes de repo | `node scripts/check-invariants.ts` | **9/9 PASS** (RLS en 18 tablas, FORCE, sin BYPASSRLS, sin secretos, 42/294/84, sin PASS contradictorio, slices sin huecos, paquete coherente) |
 | CI | `.github/workflows/ci.yml` | typecheck + tests + invariantes en Node 24 y 26 |
 
 Cobertura real de la suite: JWT (firma, iss, aud, exp, `alg:none`, membresía, tenant cruzado, suspensión), policy (autoaprobación, invalidación por hash/versión/derechos/destinatario/caducidad/revocación, mandato caducado/revocado/fuera de scope/ampliación), idempotencia (replay, conflicto, outcome desconocido), outbox (dedup, ACK, dead-letter), presupuesto (sobrespaso, liquidación), documento (CAS, nodo bloqueado, diff, render determinista), render (PNG decodificado píxel a píxel, xref del PDF, escapado de SVG, fallo cerrado sin glifo o sin motor), pixel diff (cambio visible en su nodo, tolerancia, cambio fuera de página detectado como invisible), SVG (script, `on*`, entidad, `foreignObject`, URL externa, data URI, allowlist), paleta (ratio 21, fallo AA), tokens (ciclo, cambio de tipo, export reproducible), QA (deriva numérica, estética no compensa), export (fuente sin licencia, derechos caducados, DPI), entrega, brandbook, learning, handoff, reports, API (401, identidad inyectada, replay, aislamiento cross-tenant) y E2E del vertical.

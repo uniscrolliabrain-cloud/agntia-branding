@@ -5,6 +5,7 @@
  * repository makes about tenancy, secrets and the campaign program. A failure
  * here is a release blocker.
  */
+import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 
@@ -168,6 +169,37 @@ async function main(): Promise<void> {
     );
     if (bogus.length > 0) throw new Error(`incoherente: ${bogus.map((c) => c.id).join(", ")}`);
     return "sin PASS contradictorio";
+  });
+
+  await check("slices: cada capacidad pertenece a exactamente una slice", async () => {
+    // The registry is the contract between the capability table and what the
+    // running service may do, so it is validated structurally on every commit.
+    const registry = (await import(new URL("../src/slices/registry.ts", import.meta.url).href)) as {
+      SLICES: Array<{ id: string }>;
+      validateSliceRegistry: () => string[];
+    };
+    const problems = registry.validateSliceRegistry();
+    if (problems.length > 0) throw new Error(problems.join("; "));
+    return `${registry.SLICES.length} slices sin huecos ni duplicados`;
+  });
+
+  await check("paquete: bin, exports y files describen el build instalable", async () => {
+    const raw = await readFile("package.json", "utf8");
+    const pkg = JSON.parse(raw) as {
+      private?: boolean;
+      bin?: Record<string, string>;
+      exports?: Record<string, { types?: string; import?: string }>;
+      files?: string[];
+    };
+    if (pkg.bin?.["agntia-branding"] !== "./dist/cli.js") throw new Error("bin no apunta a dist/cli.js");
+    if (!existsSync("src/cli.ts")) throw new Error("el bin no tiene fuente src/cli.ts");
+    const rootExport = pkg.exports?.["."];
+    if (!rootExport?.types?.startsWith("./dist/") || !rootExport.import?.startsWith("./dist/")) {
+      throw new Error("los exports del paquete no apuntan a dist");
+    }
+    if (!Array.isArray(pkg.files) || !pkg.files.includes("dist")) throw new Error("files no incluye dist");
+    if (pkg.private !== true) throw new Error("el paquete debe seguir private: publicarlo exige autorización");
+    return "bin + exports + files coherentes; publicación desactivada a propósito";
   });
 
   const failed = results.filter((r) => !r.ok);

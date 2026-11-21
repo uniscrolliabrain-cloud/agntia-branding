@@ -1,12 +1,14 @@
 # BRD-C41 — evidencia
 
-SHA base: `deb6e59400fea8f07ece16613be90b2145ec00be` · generado 2026-11-20T14:56:38.332Z.
+SHA base: `7de366159bb14a3fd2f8639a443090dbf5f652d8` · generado 2026-11-21T16:18:09.403Z.
 
 ## Arquivos
 
 - [`.github/workflows/ci.yml`](../../../.github/workflows/ci.yml)
 - [`src/db/migrate.ts`](../../../src/db/migrate.ts)
 - [`src/db/seed.ts`](../../../src/db/seed.ts)
+- [`scripts/package-smoke.ts`](../../../scripts/package-smoke.ts)
+- [`tsconfig.build.json`](../../../tsconfig.build.json)
 - [`LICENSE`](../../../LICENSE)
 - [`.gitignore`](../../../.gitignore)
 

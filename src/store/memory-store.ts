@@ -1,6 +1,7 @@
 import type { DomainRole, ResourceScope } from "../auth/principal.ts";
 import type { ApprovalBinding } from "../policy/approval.ts";
 import type { EvidenceRef } from "../contracts/evidence.ts";
+import { resolveActivation, type SliceActivation } from "../slices/registry.ts";
 
 /**
  * Tenant-scoped in-memory store used by the API, the worker and the tests.
@@ -103,7 +104,14 @@ export interface JobRecord {
 
 const resourceKey = (tenantId: string, type: ResourceType, id: string): string => `${tenantId}:${type}:${id}`;
 
+export interface MemoryStoreOptions {
+  /** Which vertical slices this store serves. Defaults to the active set. */
+  activation?: SliceActivation;
+}
+
 export class MemoryStore {
+  /** Resolved vertical-slice activation; the PEP consults it on every call. */
+  readonly activation: SliceActivation;
   readonly memberships = new Map<string, Membership>();
   readonly resources = new Map<string, StoredResource>();
   readonly approvals = new Map<string, ApprovalBinding>();
@@ -112,6 +120,10 @@ export class MemoryStore {
   readonly audit: AuditRecord[] = [];
   readonly budgets = new Map<string, BudgetRecord>();
   readonly jobs = new Map<string, JobRecord>();
+
+  constructor(options: MemoryStoreOptions = {}) {
+    this.activation = options.activation ?? resolveActivation();
+  }
 
   addMembership(membership: Membership): void {
     this.memberships.set(`${membership.tenantId}:${membership.userId}`, membership);

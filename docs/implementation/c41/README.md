@@ -1,8 +1,8 @@
 # BRD-C41 · Operaciones, CI, backup y release — evidencia de implementación
 
-Estado: **PARTIAL**. Generado 2026-11-20T14:56:38.332Z sobre `deb6e59400fea8f07ece16613be90b2145ec00be`.
+Estado: **PARTIAL**. Generado 2026-11-21T16:18:09.403Z sobre `7de366159bb14a3fd2f8639a443090dbf5f652d8`.
 
-CI con typecheck, tests e invariantes en Node 24/26; migrate/seed fallan en cerrado sin DATABASE_URL.
+CI con typecheck, tests, invariantes y paquete instalable en Node 24/26; la instalación desde tarball se prueba de verdad en un proyecto vacío.
 
 - Campaña original: [`docs/campaigns/41-`](../../campaigns/)
 - Programa de ejecución: [`CAMPAIGN.md`](../../execution-program/campaigns/041/CAMPAIGN.md)
@@ -10,7 +10,7 @@ CI con typecheck, tests e invariantes en Node 24/26; migrate/seed fallan en cerr
 
 ## Qué es real
 
-CI con typecheck, tests e invariantes en Node 24/26; migrate/seed fallan en cerrado sin DATABASE_URL.
+CI con typecheck, tests, invariantes y paquete instalable en Node 24/26; la instalación desde tarball se prueba de verdad en un proyecto vacío.
 
 ## Qué falta
 

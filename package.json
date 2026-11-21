@@ -3,16 +3,40 @@
   "version": "0.1.0",
   "private": true,
   "description": "Branding, diseño y sistemas de marca — especialista AgntiaPro con twin delegado",
+  "license": "UNLICENSED",
   "type": "module",
   "engines": {
     "node": ">=24"
   },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "agntia-branding": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
+    "build": "tsc -p tsconfig.build.json && node scripts/copy-assets.ts",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "prepare": "npm run build",
+    "prepack": "npm run build",
     "typecheck": "tsc --noEmit",
     "test": "node --test test/",
     "test:db": "node --test test/db-rls.test.ts",
     "check": "npm run typecheck && npm run test",
-    "check:all": "npm run check && node scripts/check-invariants.ts",
+    "check:all": "npm run check && node scripts/check-invariants.ts && npm run build",
+    "check:package": "node scripts/package-smoke.ts",
+    "cli": "node src/cli.ts",
     "migrate": "node src/db/migrate.ts",
     "seed": "node src/db/seed.ts"
   },

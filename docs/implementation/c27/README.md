@@ -1,6 +1,6 @@
 # BRD-C27 · QA de texto — evidencia de implementación
 
-Estado: **IMPLEMENTED_LOCAL**. Generado 2026-11-20T14:56:38.332Z sobre `deb6e59400fea8f07ece16613be90b2145ec00be`.
+Estado: **IMPLEMENTED_LOCAL**. Generado 2026-11-21T16:18:09.403Z sobre `7de366159bb14a3fd2f8639a443090dbf5f652d8`.
 
 Comparación con normalización y detección explícita de deriva numérica.
 

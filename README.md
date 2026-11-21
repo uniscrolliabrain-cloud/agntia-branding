@@ -2,7 +2,7 @@
 
 Branding, diseño y sistemas de marca: diseño de empresa SaaS especialista con middleware hacia AgntiaPro/`agente`. Entrega documental de la familia Agntia · 2026-11-13.
 
-**IMPLEMENTACIÓN PARCIAL Y LOCAL. Hay código TypeScript ejecutable, typecheck limpio y 108 tests reales en verde, incluida la RLS probada contra un PostgreSQL 18 efímero y el render de PDF/PNG/SVG con hash de bytes; no hay proveedores conectados, ni entorno gestionado, ni despliegue.** Las 42 campañas originales siguen intactas en el manifest; su estado de implementación real vive en [la matriz de estado](docs/implementation/STATUS.md) (30 implementadas en local, 10 parciales, 1 bloqueada por proveedor, 1 sin implementar; 75/84 gates PASS sobre reglas locales). Aspiración de calidad inspirada en referentes mundiales; no afirmación de paridad, certificación o cumplimiento universal.
+**IMPLEMENTACIÓN PARCIAL Y LOCAL. Hay código TypeScript ejecutable, typecheck limpio y 133 tests reales en verde, incluida la RLS probada contra un PostgreSQL 18 efímero y el render de PDF/PNG/SVG con hash de bytes; el núcleo se instala como paquete (tarball probado en un proyecto vacío) y las verticales se encienden por configuración. No hay proveedores conectados, ni entorno gestionado, ni despliegue.** Las 42 campañas originales siguen intactas en el manifest; su estado de implementación real vive en [la matriz de estado](docs/implementation/STATUS.md) (30 implementadas en local, 10 parciales, 1 bloqueada por proveedor, 1 sin implementar; 75/84 gates PASS sobre reglas locales). Aspiración de calidad inspirada en referentes mundiales; no afirmación de paridad, certificación o cumplimiento universal.
 
 Entregar identidad y materiales de marca editables, coherentes, accesibles y trazables con revisión humana y derechos de uso demostrables.
 
@@ -10,11 +10,42 @@ Se presta servicio a empresas del padre y a clientes externos mediante portal pr
 
 ## Implementación
 
-`src/` con contratos Zod, autenticación JWT, PEP, aprobaciones, idempotencia, outbox, dominio de marca (brief, naming, derechos, tipografía, documento vectorial, tokens, QA, preflight, handoff) y API `/v1/branding`. `src/db/schema.sql` define 18 tablas con RLS y FK compuestas por tenant. `test/` contiene la suite (88 casos).
+`src/` con contratos Zod, autenticación JWT, PEP, aprobaciones, idempotencia, outbox, dominio de marca (brief, naming, derechos, tipografía, documento vectorial, tokens, QA, preflight, handoff), API `/v1/branding`, CLI, servidor `node:http` y registro de vertical slices. `src/db/schema.sql` define 18 tablas con RLS y FK compuestas por tenant. `test/` contiene la suite (133 casos).
 
 ```bash
-npm ci && npm run typecheck && npm test && node scripts/check-invariants.ts
+npm ci                      # instala y compila (prepare → build)
+npm run check:all           # typecheck + tests + invariantes + build
+npm run check:package       # pack, instalación en proyecto vacío, CLI y API ESM
 ```
+
+### Instalar y usar
+
+```bash
+npm pack                                   # agntia-branding-0.1.0.tgz
+npm install ./agntia-branding-0.1.0.tgz     # en otro proyecto
+npx agntia-branding doctor                 # qué está configurado y qué no
+npx agntia-branding slices                 # verticales, estado y blockers
+```
+
+El paquete expone `dist/index.js` + tipos, el binario `agntia-branding` y el SQL revisado en `dist/db`. Sigue marcado `private: true`: es instalable por tarball o git, no publicable en un registro sin decisión explícita.
+
+### Vertical slices
+
+Las 24 capacidades están repartidas en 13 verticales (`src/slices/registry.ts`): 8 `active` (brief, identity, design, rights, documents, tokens, qa, brandbook), 4 `ready` (research, export, delivery, learning) y 1 `blocked` (penpot). El core arranca sólo con las `active`; una capacidad de una slice apagada se deniega con `unsupported_capability` y queda auditada como `slice_disabled`, aunque el principal sea `owner`.
+
+```bash
+AGNTIA_BRANDING_SLICES=brief,identity,design,rights,documents,tokens,qa,brandbook,research \
+  npx agntia-branding serve
+```
+
+Activar no concede permisos: no sustituye a la capability, al scope, al mandato ni a la aprobación. Una slice `blocked` no se puede activar y falla cerrado con sus blockers. Detalle y receta para añadir una vertical: [VERTICAL-SLICES.md](docs/implementation/VERTICAL-SLICES.md).
+
+```bash
+npx agntia-branding render input.json --out .artifacts --accept-findings
+npx agntia-branding capabilities --json
+```
+
+`serve` sólo funciona en desarrollo: en `production` se niega a usar el store en memoria porque el adaptador Postgres no existe todavía.
 
 Ningún adaptador externo (Penpot, Anam, gateway de modelos, Supabase) está configurado: se declaran `not_configured` y no se simulan. Sin `DATABASE_URL`, `migrate`/`seed` salen con `NOT_CONFIGURED`.
 

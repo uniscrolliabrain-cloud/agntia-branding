@@ -24,22 +24,26 @@ export interface PreflightInput {
   now: Date;
 }
 
-export interface ExportManifest {
-  id: string;
-  tenantId: string;
-  documentId: string;
-  documentVersion: number;
-  editableHash: string;
-  renderHash: string;
-  fontFamily: string;
-  fontLicenseRef: string;
-  rightsHash: string;
-  format: z.infer<typeof exportFormatSchema>;
-  dpi: number;
-  colorProfile: "sRGB" | "CMYK" | "P3";
-  findings: string[];
-  hash: string;
-}
+export const exportManifestSchema = z
+  .object({
+    id: z.string().min(1).max(256),
+    tenantId: z.string().min(1).max(128),
+    documentId: z.string().min(1).max(128),
+    documentVersion: z.number().int().nonnegative(),
+    editableHash: z.string().regex(/^[a-f0-9]{64}$/),
+    renderHash: z.string().regex(/^[a-f0-9]{64}$/),
+    fontFamily: z.string().min(1).max(128),
+    fontLicenseRef: z.string().min(1).max(256),
+    rightsHash: z.string().regex(/^[a-f0-9]{64}$/),
+    format: exportFormatSchema,
+    dpi: z.number().int().positive().max(1200),
+    colorProfile: z.enum(["sRGB", "CMYK", "P3"]),
+    findings: z.array(z.string().min(1).max(200)).max(64),
+    hash: z.string().regex(/^[a-f0-9]{64}$/),
+  })
+  .strict();
+
+export type ExportManifest = z.infer<typeof exportManifestSchema>;
 
 const MIN_PRINT_DPI = 300;
 

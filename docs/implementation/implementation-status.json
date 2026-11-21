@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "repository": "uniscrolliabrain-cloud/agntia-branding",
-  "generated_at": "2026-11-20T14:56:38.332Z",
-  "base_sha": "deb6e59400fea8f07ece16613be90b2145ec00be",
+  "generated_at": "2026-11-21T16:18:09.403Z",
+  "base_sha": "7de366159bb14a3fd2f8639a443090dbf5f652d8",
   "program": {
     "campaigns": 42,
     "tasks": 294,
@@ -21,8 +21,8 @@
   "verification": {
     "typecheck": "pass",
     "tests": {
-      "total": 108,
-      "pass": 108,
+      "total": 133,
+      "pass": 133,
       "fail": 0
     },
     "invariants": {
@@ -62,11 +62,13 @@
       "files": [
         "src/policy/pep.ts",
         "src/contracts/capabilities.ts",
+        "src/slices/registry.ts",
         "src/db/schema.sql"
       ],
       "tests": [
         "PEP rechaza capacidades desconocidas",
-        "PEP deniega recurso fuera del scope del colaborador"
+        "PEP deniega recurso fuera del scope del colaborador",
+        "el PEP deniega una capacidad de una slice no activada, incluso para el owner"
       ],
       "gates": {
         "BRD-C02-G01": "PASS",
@@ -703,12 +705,16 @@
       "files": [
         "src/sdk/client.ts",
         "src/api/app.ts",
-        "src/contracts/capabilities.ts"
+        "src/contracts/capabilities.ts",
+        "src/cli.ts",
+        "src/server.ts"
       ],
       "tests": [
         "me devuelve principal y capacidades del rol",
         "una ruta inexistente devuelve 404 normalizado",
-        "las capacidades de efecto con aprobación no son invocables por el modelo"
+        "las capacidades de efecto con aprobación no son invocables por el modelo",
+        "el servidor Node habla el contrato Fetch: health, 401 y 404",
+        "slices y capabilities muestran qué está apagado y por qué"
       ],
       "gates": {
         "BRD-C35-G01": "PASS",
@@ -828,11 +834,15 @@
         ".github/workflows/ci.yml",
         "src/db/migrate.ts",
         "src/db/seed.ts",
+        "scripts/package-smoke.ts",
+        "tsconfig.build.json",
         "LICENSE",
         ".gitignore"
       ],
       "tests": [
-        "schema: toda tabla habilita row level security"
+        "schema: toda tabla habilita row level security",
+        "paquete: bin, exports y files describen el build instalable",
+        "install en un proyecto vacío: CLI y API ESM desde el tarball"
       ],
       "gates": {
         "BRD-C41-G01": "PASS",

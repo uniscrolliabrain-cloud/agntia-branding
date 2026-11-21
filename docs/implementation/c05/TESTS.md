@@ -1,6 +1,6 @@
 # BRD-C05 — tests
 
-Ejecutados realmente en este commit: `node --test test/` → **108/88 pass, 0 fail**.
+Ejecutados realmente en este commit: `node --test test/` → **133/133 pass, 0 fail**.
 Typecheck: `tsc --noEmit` → **0 errores**. Invariantes: `node scripts/check-invariants.ts` → **7/7 PASS**.
 
 ## Casos que cubren esta campaña

@@ -1,6 +1,6 @@
 # BRD-C35 — tests
 
-Ejecutados realmente en este commit: `node --test test/` → **108/88 pass, 0 fail**.
+Ejecutados realmente en este commit: `node --test test/` → **133/133 pass, 0 fail**.
 Typecheck: `tsc --noEmit` → **0 errores**. Invariantes: `node scripts/check-invariants.ts` → **7/7 PASS**.
 
 ## Casos que cubren esta campaña
@@ -8,6 +8,8 @@ Typecheck: `tsc --noEmit` → **0 errores**. Invariantes: `node scripts/check-in
 - me devuelve principal y capacidades del rol
 - una ruta inexistente devuelve 404 normalizado
 - las capacidades de efecto con aprobación no son invocables por el modelo
+- el servidor Node habla el contrato Fetch: health, 401 y 404
+- slices y capabilities muestran qué está apagado y por qué
 
 ## Lo que estos tests no prueban
 

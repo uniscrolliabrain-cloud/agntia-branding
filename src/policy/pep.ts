@@ -1,4 +1,5 @@
 import { getCapability, type CapabilitySpec } from "../contracts/capabilities.ts";
+import { sliceDeclaring } from "../slices/registry.ts";
 import { DomainError } from "../contracts/errors.ts";
 import type { Principal, ResourceScope } from "../auth/principal.ts";
 import { isResourceInScope, principalHasCapability } from "../auth/principal.ts";
@@ -62,6 +63,15 @@ export function enforcePolicy(input: PepInput, store: MemoryStore): PepResult {
   if (envelope.tenantId !== principal.tenantId) {
     audit("denied", "tenant_mismatch");
     throw new DomainError("scope_forbidden", "Operation tenant does not match the principal.");
+  }
+
+  // A vertical slice that is not activated cannot be invoked, even by an owner.
+  // The capability exists, so the error is about availability, not about rights.
+  if (!store.activation.isCapabilityEnabled(spec.name)) {
+    audit("blocked", "slice_disabled");
+    throw new DomainError("unsupported_capability", "The vertical slice for this capability is not activated.", {
+      details: { capability: spec.name, slice: sliceDeclaring(spec.name) ?? "unknown" },
+    });
   }
 
   if (!principalHasCapability(principal, spec.name)) {
