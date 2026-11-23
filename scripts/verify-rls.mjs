@@ -202,13 +202,41 @@ await expectFail(
   /permission denied|row-level security/i,
 );
 
+// 5. FORCE RLS: un owner no-superusuario tampoco escapa del aislamiento.
+await q(`do $$ begin
+  if not exists (select 1 from pg_roles where rolname = 'branding_owner') then
+    create role branding_owner nologin;
+  end if;
+end $$;`);
+await q(`alter table branding.resources owner to branding_owner`);
+// El owner real (postgres en Supabase) ya tiene USAGE; aquí se simula ese rol.
+await q(`grant usage on schema branding to branding_owner`);
+
+await expectOk("owner no-superusuario sólo ve su tenant (FORCE RLS)", async () => {
+  const r = await asTenant("branding_owner", claimsA, () =>
+    q(`select resource_id from branding.resources order by resource_id`),
+  );
+  const seen = r.rows.map((x) => x.resource_id).join(",");
+  if (seen !== "res_a") throw new Error(`vio: ${seen}`);
+  return `vio ${seen}`;
+});
+
+await expectOk("owner no-superusuario sin claims no ve nada", async () => {
+  const r = await asTenant("branding_owner", "", () =>
+    q(`select count(*)::int as n from branding.resources`),
+  );
+  if (r.rows[0].n !== 0) throw new Error(`vio ${r.rows[0].n}`);
+  return "0 filas";
+});
+
 const ownerView = await q(`select count(*)::int as n from branding.resources`);
 const force = await q(
-  `select relname, relforcerowsecurity from pg_class where relname in ('resources','audit_log') order by relname`,
+  `select relname, relforcerowsecurity from pg_class
+   where relname in ('resources','audit_log','approvals','outbox','memberships') order by relname`,
 );
 
 for (const r of results) console.log(`${r.ok ? "PASS" : "FAIL"} · ${r.name} — ${r.detail}`);
-console.log(`\nowner/superusuario ve ${ownerView.rows[0].n} recursos de 2 tenants`);
+console.log(`\nsuperusuario ve ${ownerView.rows[0].n} recursos de 2 tenants (bypass del motor, inevitable)`);
 console.log(`force RLS: ${force.rows.map((r) => `${r.relname}=${r.relforcerowsecurity}`).join(" ")}`);
 
 const failed = results.filter((r) => !r.ok).length;

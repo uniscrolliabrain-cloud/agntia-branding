@@ -44,7 +44,7 @@ Leyenda: **PASS_LOCAL** = código + test automatizado en verde, en memoria. **PA
 | C03 Supabase JWT y principal | `jwt.ts`, `principal.ts` + 8 tests adversariales de token | PASS_LOCAL |
 | C04 Twins y nomenclatura | `TwinBinding`, `DelegationMandate` + tests de exceso/expiry | PASS_LOCAL |
 | C05 DTOs y errores | envelope estricto, dinero decimal, hash canónico | PASS_LOCAL |
-| C06 Persistencia y RLS | `memory.ts` + tests; **RLS verificado 13/13 en Postgres embebido** (`C06-RLS-VERIFICATION.md`); Supabase gestionado y pooling sin probar | PARTIAL_LOCAL |
+| C06 Persistencia y RLS | `memory.ts` + tests; **RLS verificado 15/15 en Postgres embebido, con FORCE RLS** (`C06-RLS-VERIFICATION.md`); Supabase gestionado y pooling sin probar | PARTIAL_LOCAL |
 | C07 Mandatos y aprobaciones | `approval.ts` + 3 tests de invalidación | PASS_LOCAL |
 | C08 Secretos y discovery | discovery, endpoints ligados, URLs firmadas; proveedor real ausente | PARTIAL_LOCAL |
 | C09 Brief | `strategy.ts` + pendientes explícitos | PASS_LOCAL |
@@ -91,7 +91,7 @@ Leyenda: **PASS_LOCAL** = código + test automatizado en verde, en memoria. **PA
 ## 4. Lo que NO está verificado
 
 - **Supabase real**: no hay proyecto, issuer/JWKS ni tokens emitidos. La verificación se prueba con claves y JWKS sintéticos.
-- **Postgres/Supabase gestionado**: la migración se aplicó y las políticas RLS se probaron con dos tenants sobre PGlite (Postgres real embebido): 13/13 PASS. Sigue sin probarse un proyecto Supabase real, ni PostgREST, ni el pooler, ni la concurrencia entre claims. Hallazgo abierto: `force row level security` está desactivado, así que el owner del esquema y `service_role` **bypasean** el aislamiento; la API debe conectar como `branding_api`.
+- **Postgres/Supabase gestionado**: la migración se aplicó y las políticas RLS se probaron con dos tenants sobre PGlite (Postgres real embebido): 15/15 PASS, incluidos owner no-superusuario contenido por `FORCE RLS` y append-only. Sigue sin probarse un proyecto Supabase real, ni PostgREST, ni el pooler, ni la concurrencia entre claims. Límite del motor: un superusuario (o `service_role`) bypasea RLS; la API debe conectar como `branding_api`.
 - **Penpot / Anam**: puertos y estados `not_configured`; sin cuenta, endpoint ni credencial.
 - **UI/portal y editor vectorial**: no existen. No hay render PDF/PNG, OCR ni medición tipográfica real (C25 depende de medidas inyectadas).
 - **Coste real**: presupuesto determinista, sin tarifas ni consumo de proveedor.

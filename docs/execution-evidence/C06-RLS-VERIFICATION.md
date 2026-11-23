@@ -9,7 +9,7 @@ La migración se aplicó por primera vez contra un **Postgres real embebido** (P
 ```text
 node scripts/verify-rls.mjs
 migración aplicada (sin pgcrypto: gen_random_uuid es nativo desde PG13)
-RESUMEN 13/13 PASS
+RESUMEN 15/15 PASS
 ```
 
 ## Resultados
@@ -29,14 +29,18 @@ RESUMEN 13/13 PASS
 | `branding_worker` no escribe `revisions` | grants por rol | PASS · `permission denied` |
 | Revisión cross-tenant rechazada | FK compuesta + RLS | PASS |
 | `inbox` ilegible por `branding_api` | grants por rol | PASS |
+| Owner no-superusuario sólo ve su tenant | `force row level security` | PASS · `res_a` |
+| Owner no-superusuario sin claims no ve nada | `force row level security` | PASS · 0 filas |
 
-## Hallazgo abierto (no corregido en este commit)
+## Hallazgo corregido: el owner ya no escapa del RLS
 
-`relforcerowsecurity = false` en todas las tablas y el owner/superusuario ve **2 recursos de 2 tenants**. Consecuencias:
+La primera ejecución mostró `relforcerowsecurity = false` y el owner viendo **2 recursos de 2 tenants**. Se corrigió en la migración: las 11 tablas llevan ahora `enable row level security` **y** `force row level security`, verificado en `pg_class` (`approvals=true audit_log=true memberships=true outbox=true resources=true`).
 
-1. Si la API se conecta como **owner** de las tablas o como `service_role`, **el RLS no se aplica** y el aislamiento depende solo del filtrado de la aplicación.
-2. Por eso el rol de conexión debe ser `branding_api` (o `branding_worker`), nunca el owner del esquema, y debe verificarse en el arranque de la aplicación.
-3. Endurecerlo requiere `alter table ... force row level security`, que también sometería al owner; hay que decidir antes cómo se hacen backfills (con claims explícitos o rol de mantenimiento auditado).
+Las dos aserciones nuevas lo demuestran sobre un owner no-superusuario: ve solo `res_a` con claims del tenant A y **0 filas** sin claims.
+
+Lo que el motor no permite cerrar: **un superusuario bypasea RLS por diseño** (sigue viendo 2 filas). Por eso `service_role` o el rol `postgres` de Supabase tampoco quedan contenidos: la regla operativa es que la aplicación conecte como `branding_api`/`branding_worker`, nunca como superusuario ni `service_role`.
+
+Consecuencia para operación: un backfill bajo `FORCE RLS` debe fijar `request.jwt.claims` con `SET LOCAL` dentro de su transacción, o usar un rol de mantenimiento con `BYPASSRLS` explícito, auditado y de vida corta. Un `psql` como owner ya no ve todas las filas por defecto, que es justo lo que se quería.
 
 ## Riesgo de despliegue: pooling
 

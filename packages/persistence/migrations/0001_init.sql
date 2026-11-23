@@ -199,17 +199,32 @@ language sql stable as $$
   );
 $$;
 
+-- enable + force: el owner del esquema tampoco escapa del aislamiento. Un
+-- backfill debe fijar request.jwt.claims con SET LOCAL o usar un rol de
+-- mantenimiento con BYPASSRLS explícito y auditado. Un superusuario sigue
+-- bypasando RLS por diseño del motor: la app nunca debe conectar como tal.
 alter table branding.resources enable row level security;
+alter table branding.resources force row level security;
 alter table branding.resource_revisions enable row level security;
+alter table branding.resource_revisions force row level security;
 alter table branding.audit_log enable row level security;
+alter table branding.audit_log force row level security;
 alter table branding.approvals enable row level security;
+alter table branding.approvals force row level security;
 alter table branding.intents enable row level security;
+alter table branding.intents force row level security;
 alter table branding.operation_attempts enable row level security;
+alter table branding.operation_attempts force row level security;
 alter table branding.outbox enable row level security;
+alter table branding.outbox force row level security;
 alter table branding.inbox enable row level security;
+alter table branding.inbox force row level security;
 alter table branding.asset_rights enable row level security;
+alter table branding.asset_rights force row level security;
 alter table branding.font_licenses enable row level security;
+alter table branding.font_licenses force row level security;
 alter table branding.memberships enable row level security;
+alter table branding.memberships force row level security;
 
 create policy resources_tenant_isolation on branding.resources
   using (tenant_id = branding.current_tenant())
