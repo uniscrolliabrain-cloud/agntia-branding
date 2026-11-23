@@ -3,13 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "description": "Agntia Branding · stores tenant-scoped, audit, outbox/inbox e idempotencia",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "migrations"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
-    "@agntia/contracts": "*",
-    "@agntia/domain": "*"
+    "@agntia/contracts": "0.1.0",
+    "@agntia/domain": "0.1.0"
   }
 }

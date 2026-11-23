@@ -203,6 +203,22 @@ export class BrandingService {
     return document;
   }
 
+  /**
+   * Tenant-scoped document lookup. Another tenant's document is not found.
+   * The caller names the capability that justifies reading the document, so a
+   * reviewer does not need the designer's preview grant to judge a slice.
+   */
+  requireDocument(
+    principal: Principal,
+    documentId: string,
+    capability = "brand.design.preview",
+  ): DesignDocument | null {
+    const document = this.documents.get(this.aclKey(principal.tenantId, documentId));
+    if (!document) return null;
+    this.assertAuthorized(principal, document.resourceId, capability, null);
+    return document;
+  }
+
   updateDocument(principal: Principal, input: {
     documentId: string;
     expectedVersion: number;

@@ -2,7 +2,7 @@
 
 Branding, diseño y sistemas de marca: diseño de empresa SaaS especialista con middleware hacia AgntiaPro/`agente`. Entrega documental de la familia Agntia · 2026-11-13.
 
-**IMPLEMENTACIÓN EN CURSO (2026-11-15), NO producto terminado.** Existe un monorepo TypeScript (contratos Zod, dominio determinista, identidad JWT, persistencia, adaptadores, API Hono, SDK) con **107 tests en verde** y typecheck limpio. Siguen sin verificar: Supabase real, Postgres/RLS en instancia, Penpot, Anam, editor vectorial y portal (UI). Las 42 campañas siguen abiertas como gates de producto: cobertura local en [docs/execution-evidence/FINAL-FREEBUFF-REPORT.md](docs/execution-evidence/FINAL-FREEBUFF-REPORT.md). Aspiración de calidad inspirada en referentes mundiales; no afirmación de paridad, certificación o cumplimiento universal.
+**IMPLEMENTACIÓN EN CURSO (actualizado 2026-11-23), NO producto terminado.** Existe un monorepo TypeScript (contratos Zod, dominio determinista, identidad JWT, persistencia, adaptadores, API Hono, SDK) con **131 tests en verde**, typecheck limpio y paquetes ESM instalables desde otro repositorio. La vertical P0 (`brief → research → naming → clearance → voice → tokens → design → qa → review → export → delivery → brandbook`) se ejecuta por HTTP con gates deterministas. Siguen sin verificar: Supabase real, Postgres/RLS en instancia, Penpot, Anam, editor vectorial y portal (UI). Las 42 campañas siguen abiertas como gates de producto: cobertura local en [docs/execution-evidence/FINAL-FREEBUFF-REPORT.md](docs/execution-evidence/FINAL-FREEBUFF-REPORT.md). Aspiración de calidad inspirada en referentes mundiales; no afirmación de paridad, certificación o cumplimiento universal.
 
 Entregar identidad y materiales de marca editables, coherentes, accesibles y trazables con revisión humana y derechos de uso demostrables.
 
@@ -11,10 +11,22 @@ Se presta servicio a empresas del padre y a clientes externos mediante portal pr
 ## Código (estado real)
 
 ```bash
-npm ci          # instala desde package-lock.json
+npm ci             # instala desde package-lock.json
 npm run typecheck
-npm test        # 107 tests
+npm test           # 131 tests
+npm run build      # ESM + .d.ts en cada workspace
+npm run verify:parent   # tarballs + instalación + smoke + typecheck de consumidor
 ```
+
+## Instalar en el repo padre
+
+El monorepo no se publica en un registry: `npm run pack:parent` genera siete tarballs en `artifacts/parent-install/` (con `parent-install.json` y sha256) que se declaran como dependencias `file:` en el padre, o bien se instalan por ruta local tras `npm run build`. Guía completa, entrypoints y límites: [docs/integration/PARENT-REPO-INSTALL.md](docs/integration/PARENT-REPO-INSTALL.md).
+
+La instalación se comprueba en un proyecto limpio que importa y **typechequea** los siete paquetes (`skipLibCheck: false`), sin tocar `/agente`.
+
+## Vertical ejecutable
+
+`@agntia/api` expone `POST/GET /v1/branding/verticals` y `POST /v1/branding/verticals/:id/stages/:stage`. Las etapas son estrictas y no se pueden saltar; cada una exige su capability, es idempotente por `operationKey` y devuelve `needs_input` con motivos cuando un gate determinista falla. La entrega requiere una aprobación humana provisionada y ligada al hash del manifest. Evidencia: [docs/execution-evidence/C40-VERTICAL-SLICES.md](docs/execution-evidence/C40-VERTICAL-SLICES.md).
 
 | Paquete | Contenido |
 |---|---|
@@ -23,7 +35,7 @@ npm test        # 107 tests
 | `packages/identity` | Verificación JWT Supabase (JWKS fijo), membership/ACL, TwinBinding y mandato |
 | `packages/persistence` | Stores tenant-scoped con CAS, audit append-only, outbox/inbox, idempotencia + migración SQL con RLS |
 | `packages/adapters` | Discovery de capacidades, URLs firmadas, puertos Penpot/Anam (sin endpoints inventados) |
-| `apps/api` | API Hono con PEP, envelope, idempotencia y errores 4xx/5xx normalizados |
+| `apps/api` | API Hono con PEP, envelope, idempotencia, errores normalizados, `VerticalService` de 12 etapas y aprobaciones humanas |
 | `packages/sdk` | Cliente servidor tipado con allowlist de rutas |
 
 No hay UI, ni proveedores conectados, ni base de datos provisionada. `not_configured` y `NOT_VERIFIED` se muestran como tales; ningún mock se presenta como integración real.

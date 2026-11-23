@@ -1,6 +1,6 @@
 # Freebuff · Informe de ejecución de la fábrica — agntia-branding
 
-**Fecha:** 2026-11-15 · **Base:** `7734d6d` (`main`) · **Rama de trabajo:** `freebuff/0cf2b25a7e0a26aedf48cb84`
+**Fecha:** 2026-11-15 · **Actualizado:** 2026-11-23 (ver §8) · **Base:** `7734d6d` (`main`) · **Rama de trabajo:** `freebuff/0cf2b25a7e0a26aedf48cb84`
 **Alcance autorizado por el fundador:** implementar el código de las 42 fases en este repositorio (cambio registrado en `AGENTS.md`).
 
 > Leer el estado tal como está: hay código real con tests en verde en memoria, **no** producto desplegado. Ningún proveedor externo, base de datos ni UI ha sido provisionado o probado contra runtime real.
@@ -78,7 +78,7 @@ Leyenda: **PASS_LOCAL** = código + test automatizado en verde, en memoria. **PA
 | C37 Handoff | ACK obligatorio, transiciones | PASS_LOCAL |
 | C38 Coste y observabilidad | presupuesto sin doble gasto, percentiles; coste proveedor no medido | PARTIAL_LOCAL |
 | C39 Privacidad y adversarial | centinelas de secretos, legal hold, restore | PASS_LOCAL |
-| C40 Vertical E2E | dos tenants, receipt, outbox, revocación, incertidumbre (en memoria) | PASS_LOCAL |
+| C40 Vertical E2E | dos tenants, receipt, outbox, revocación, incertidumbre; **vertical de 12 etapas por HTTP con gates y aprobación humana** (`C40-VERTICAL-SLICES.md`), en memoria | PASS_LOCAL |
 | C41 Operaciones y release | gate de release, flags; backup/restore **no probado** | PARTIAL_LOCAL |
 | C42 Aceptación | matriz degrada PASS sin evidencia; repo no completo | PASS_LOCAL |
 
@@ -127,3 +127,31 @@ Sin secretos en el repo: el CI bloquea `.env*` y patrones de claves.
 2. Levantar el servidor con un proyecto Supabase de pruebas y ejecutar el flujo E2E por HTTP, no solo `app.request`.
 3. Decidir UI mínima (portal + visor de propuestas) o declararla fuera de alcance.
 4. Solo entonces reevaluar C18/C34/C35/C41 y actualizar la matriz.
+
+## 8. Actualización 2026-11-23 · instalabilidad y vertical ejecutable
+
+Esta sección añade evidencia nueva sin reescribir las cifras históricas de §1.
+
+| Comprobación | Comando | Resultado real |
+|---|---|---|
+| Typecheck | `./node_modules/.bin/tsc -p tsconfig.json --noEmit` | 0 errores |
+| Tests | `npm test` | **131 tests · 12 archivos · verde** (9 nuevos de vertical) |
+| Build de paquetes | `npm run build` | 7 paquetes ESM + `.d.ts`; 0 especificadores `.ts` en `dist` |
+| Instalación en consumidor limpio | `npm run verify:parent` | 7 tarballs, 9 paquetes instalados, smoke PASS y typecheck `strict` sin `skipLibCheck` |
+| RLS | `node scripts/verify-rls.mjs` | 15/15 (sin cambios en esta iteración) |
+
+**Qué se añadió**
+
+- `scripts/build-packages.mjs`: build en orden de dependencias y reescritura de `.d.ts` para que un consumidor sin `allowImportingTsExtensions` pueda typechequear.
+- `scripts/pack-parent.mjs` + `scripts/verify-parent-install.mjs`: tarballs `private` con solo `dist/` (y la migración en persistence), manifest con sha256, instalación `file:` y consumidor TypeScript de prueba.
+- `apps/api/src/verticals.ts`: vertical P0 de 12 etapas con estado por tenant, ACL por etapa, idempotencia, artefactos y gates deterministas.
+- Rutas `POST/GET /v1/branding/verticals`, `POST …/stages/:stage` y `POST /v1/branding/approvals`; la aprobación deriva rol/competencia del membership, no del cuerpo.
+- `docs/integration/PARENT-REPO-INSTALL.md` y `docs/execution-evidence/C40-VERTICAL-SLICES.md`.
+- Job CI `parent-install` que ejecuta `npm run verify:parent`.
+
+**Qué NO cambia**
+
+- C40 sigue **PASS_LOCAL**: no hay proveedor, Postgres/Supabase gestionado ni UI que cierren sus gates de producto.
+- La instalación se verificó en un consumidor limpio local, **no** en `/agente`; no se abrió PR en el padre ni se publicó en un registry.
+- Stores en memoria, servidor HTTP no arrancado, sin Penpot/Anam, sin render y sin despliegue.
+- Matriz global: **34 PASS_LOCAL · 8 PARTIAL_LOCAL · 0/84 gates formales**.

@@ -183,6 +183,10 @@ export const ROUTE_ALLOWLIST: readonly { method: string; pattern: RegExp }[] = [
   { method: "POST", pattern: /^\/v1\/branding\/reports$/ },
   { method: "POST", pattern: /^\/v1\/branding\/advisor-sessions$/ },
   { method: "POST", pattern: /^\/v1\/branding\/advisor-sessions\/[A-Za-z0-9:_-]{8,128}\/close$/ },
+  { method: "POST", pattern: /^\/v1\/branding\/approvals$/ },
+  { method: "POST", pattern: /^\/v1\/branding\/verticals$/ },
+  { method: "GET", pattern: /^\/v1\/branding\/verticals\/[A-Za-z0-9:_-]{8,128}$/ },
+  { method: "POST", pattern: /^\/v1\/branding\/verticals\/[A-Za-z0-9:_-]{8,128}\/stages\/[a-z]+$/ },
 ];
 
 export function assertRouteAllowed(method: string, path: string): void {

@@ -3,13 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "description": "Agntia Branding · dominio determinista de las 42 campañas",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
-    "@agntia/contracts": "*",
+    "@agntia/contracts": "0.1.0",
     "zod": "^3.24.1"
   }
 }

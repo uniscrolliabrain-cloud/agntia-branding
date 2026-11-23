@@ -4,6 +4,8 @@ import {
   ApiError,
   EnvelopeSchema,
   isApiError,
+  MoneySchema,
+  type ApprovalBinding,
   type CapabilityReport,
   type OperationResult,
 } from "@agntia/contracts";
@@ -16,13 +18,29 @@ import {
 } from "@agntia/identity";
 import type { SupabaseJwtVerifier } from "@agntia/identity";
 import type { BrandingService } from "./service.ts";
+import { VerticalService } from "./verticals.ts";
 
 export interface AppDependencies {
   verifier: Pick<SupabaseJwtVerifier, "verify">;
   memberships: Membership[];
   service: BrandingService;
+  verticals?: VerticalService;
   capabilityReports?: Map<string, CapabilityReport>;
   newOperationId?: () => string;
+}
+
+/** Only provisioned review roles can issue an approval; the body never picks it. */
+const APPROVAL_ROLE_BY_PRINCIPAL: Partial<Record<Principal["role"], ApprovalBinding["reviewerRole"]>> = {
+  owner: "owner",
+  brand_reviewer: "brand_reviewer",
+  legal_reviewer: "legal_reviewer",
+};
+
+function requiredString(value: unknown, field: string): string {
+  if (typeof value !== "string" || value.trim().length === 0) {
+    throw new ApiError("invalid_input", `${field} is required`);
+  }
+  return value;
 }
 
 type Variables = {
@@ -42,6 +60,7 @@ function correlationId(headers: Headers): string {
  */
 export function createApp(deps: AppDependencies): Hono<{ Variables: Variables }> {
   const app = new Hono<{ Variables: Variables }>();
+  const verticals = deps.verticals ?? new VerticalService(deps.service);
   const jobs = new Map<string, OperationResult>();
   let operationCounter = 0;
   const newOperationId = deps.newOperationId ?? (() => `op_${(++operationCounter).toString().padStart(8, "0")}`);
@@ -309,6 +328,83 @@ export function createApp(deps: AppDependencies): Hono<{ Variables: Variables }>
   app.post("/v1/branding/advisor-sessions/:sessionId/close", async (c) => {
     const principal = await requirePrincipal(c);
     return c.json(deps.service.closeAdvisorSession(principal, c.req.param("sessionId")));
+  });
+
+  app.post("/v1/branding/verticals", async (c) => {
+    const principal = await requirePrincipal(c);
+    const body = (await c.req.json()) as { verticalId?: string; resourceId?: string; documentId?: string };
+    const record = verticals.create(principal, {
+      verticalId: body.verticalId ?? null,
+      resourceId: requiredString(body.resourceId, "resourceId"),
+      documentId: requiredString(body.documentId, "documentId"),
+    });
+    return c.json({ record }, 201);
+  });
+
+  app.get("/v1/branding/verticals/:verticalId", async (c) => {
+    const principal = await requirePrincipal(c);
+    return c.json({ record: verticals.get(principal, c.req.param("verticalId")) });
+  });
+
+  app.post("/v1/branding/verticals/:verticalId/stages/:stage", async (c) => {
+    const principal = await requirePrincipal(c);
+    const body = (await c.req.json()) as Record<string, unknown>;
+    return c.json(verticals.advance(principal, c.req.param("verticalId"), c.req.param("stage"), body));
+  });
+
+  /**
+   * Approval must come from a provisioned human reviewer. Competence is taken
+   * from server membership, never from the request body, and the proposer can
+   * never approve its own effect.
+   */
+  app.post("/v1/branding/approvals", async (c) => {
+    const principal = await requirePrincipal(c);
+    if (principal.kind !== "human") throw new ApiError("forbidden", "approval requires a human principal");
+    const reviewerRole = APPROVAL_ROLE_BY_PRINCIPAL[principal.role];
+    if (!reviewerRole) throw new ApiError("forbidden", "role cannot issue an approval");
+    if (!principal.scopes.includes("brand.review.decide")) {
+      throw new ApiError("forbidden", "review decision scope is not provisioned");
+    }
+
+    const body = (await c.req.json()) as {
+      approvalId?: string;
+      resourceId?: string;
+      resourceVersion?: number;
+      payload?: unknown;
+      rights?: unknown;
+      policy?: unknown;
+      scope?: string;
+      recipient?: string;
+      channel?: string;
+      costCeiling?: unknown;
+      expiresAt?: string;
+      proposerId?: string;
+    };
+    if (body.payload === undefined) throw new ApiError("invalid_input", "payload is required");
+    if (typeof body.resourceVersion !== "number" || !Number.isInteger(body.resourceVersion) || body.resourceVersion < 0) {
+      throw new ApiError("invalid_input", "resourceVersion must be a non-negative integer");
+    }
+    const expiresAt = requiredString(body.expiresAt, "expiresAt");
+    if (new Date(expiresAt).getTime() <= Date.now()) throw new ApiError("invalid_input", "expiresAt must be in the future");
+
+    const approval = deps.service.grantApproval({
+      principal,
+      approvalId: requiredString(body.approvalId, "approvalId"),
+      resourceId: requiredString(body.resourceId, "resourceId"),
+      payload: body.payload,
+      resourceVersion: body.resourceVersion,
+      rights: body.rights ?? null,
+      policy: body.policy ?? null,
+      scope: requiredString(body.scope, "scope"),
+      recipient: requiredString(body.recipient, "recipient"),
+      channel: requiredString(body.channel, "channel"),
+      costCeiling: MoneySchema.parse(body.costCeiling),
+      expiresAt,
+      reviewerRole,
+      proposerId: requiredString(body.proposerId, "proposerId"),
+      competenceVerified: true,
+    });
+    return c.json({ approval }, 201);
   });
 
   app.onError((error, c) => {

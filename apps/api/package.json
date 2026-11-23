@@ -3,13 +3,40 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "./src/server.ts",
+  "description": "Agntia Branding · API Hono, servicio de aplicación y verticales E2E",
+  "main": "./dist/app.js",
+  "types": "./dist/app.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/app.d.ts",
+      "import": "./dist/app.js"
+    },
+    "./service": {
+      "types": "./dist/service.d.ts",
+      "import": "./dist/service.js"
+    },
+    "./verticals": {
+      "types": "./dist/verticals.d.ts",
+      "import": "./dist/verticals.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json"
+  },
   "dependencies": {
-    "@agntia/adapters": "*",
-    "@agntia/contracts": "*",
-    "@agntia/domain": "*",
-    "@agntia/identity": "*",
-    "@agntia/persistence": "*",
+    "@agntia/adapters": "0.1.0",
+    "@agntia/contracts": "0.1.0",
+    "@agntia/domain": "0.1.0",
+    "@agntia/identity": "0.1.0",
+    "@agntia/persistence": "0.1.0",
     "hono": "^4.6.14"
   }
 }

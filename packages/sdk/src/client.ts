@@ -9,6 +9,16 @@ export interface BrandingClientOptions {
   timeoutMs?: number;
 }
 
+export interface VerticalRecordView {
+  verticalId: string;
+  status: "in_progress" | "needs_input" | "completed";
+  nextStage: string;
+  completedStages: string[];
+  attention: string[];
+  version: number;
+  artifacts: Record<string, unknown>;
+}
+
 export interface DeliveryRequest {
   approvalId: string;
   receiverId: string;
@@ -161,5 +171,44 @@ export class BrandingClient {
     ttlSeconds?: number;
   }): Promise<{ sessionId: string; expiresAt: string; avToken: null; fallback: string }> {
     return this.call("POST", "/v1/branding/advisor-sessions", input);
+  }
+
+  /** Runs the P0 vertical one gate at a time. Stages are refused if skipped. */
+  startVertical(input: { resourceId: string; documentId: string; verticalId?: string }): Promise<{ record: VerticalRecordView }> {
+    return this.call("POST", "/v1/branding/verticals", input);
+  }
+
+  vertical(verticalId: string): Promise<{ record: VerticalRecordView }> {
+    return this.call("GET", `/v1/branding/verticals/${encodeURIComponent(verticalId)}`);
+  }
+
+  advanceVertical(
+    verticalId: string,
+    stage: string,
+    input: Record<string, unknown> & { operationKey: string },
+  ): Promise<{ record: VerticalRecordView; artifact: unknown }> {
+    return this.call(
+      "POST",
+      `/v1/branding/verticals/${encodeURIComponent(verticalId)}/stages/${encodeURIComponent(stage)}`,
+      input,
+    );
+  }
+
+  /** Only a provisioned human reviewer may call this route. */
+  createApproval(input: {
+    approvalId: string;
+    resourceId: string;
+    resourceVersion: number;
+    payload: unknown;
+    rights: unknown;
+    policy: unknown;
+    scope: string;
+    recipient: string;
+    channel: string;
+    costCeiling: { amount: string; currency: string; exponent: number };
+    expiresAt: string;
+    proposerId: string;
+  }): Promise<{ approval: { approvalId: string; payloadHash: string; expiresAt: string } }> {
+    return this.call("POST", "/v1/branding/approvals", input);
   }
 }

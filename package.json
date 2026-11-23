@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "description": "Agntia Branding · branding, diseño y sistemas de marca (servicio especialista delegado)",
+  "engines": {
+    "node": ">=20.11"
+  },
   "workspaces": [
     "packages/*",
     "apps/*"
@@ -12,7 +15,11 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "dev": "node --experimental-strip-types apps/api/src/server.ts"
+    "dev": "node --experimental-strip-types apps/api/src/server.ts",
+    "build": "node scripts/build-packages.mjs",
+    "clean": "node scripts/build-packages.mjs --clean",
+    "pack:parent": "node scripts/pack-parent.mjs",
+    "verify:parent": "node scripts/verify-parent-install.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
