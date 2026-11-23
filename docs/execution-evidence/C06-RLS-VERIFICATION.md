@@ -1,6 +1,6 @@
 # C06 · Verificación de RLS con dos tenants
 
-**Fecha:** 2026-11-17 · **Artefacto:** `packages/persistence/migrations/0001_init.sql` · **Verificador:** `scripts/verify-rls.mjs`
+**Fecha:** 2026-11-17 · **Actualizado:** 2026-11-23 (endurecimiento `FORCE RLS` verificado, 15/15) · **Artefacto:** `packages/persistence/migrations/0001_init.sql` · **Verificador:** `scripts/verify-rls.mjs`
 
 ## Qué se ejecutó (y qué no)
 
